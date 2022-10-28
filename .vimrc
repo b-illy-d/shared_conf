@@ -1,3 +1,4 @@
+# Hi mom
 runtime vimrc_zon.vim
 set guifont=Jet\ Brains\ Mono\ NL\ 12
 colorscheme slate
