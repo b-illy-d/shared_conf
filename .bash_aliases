@@ -52,9 +52,13 @@ alias cdp='cdr && cd pkg'
 # cp a file from a different zon to the current one
 # example: `cpz 2 pkg/svc/dca/test.js` copies from zon2 -> current 
 function cpz {
-    local DEST=`pwd`
-    local ORIGIN=${DEST/zon[[:digit:]]/zon$1}
-    cp $ORIGIN/$2 $DEST/$2
+    if [[ -z $1 ]]; then
+        echo "Usage: \`cpz 2 pkg/svc/dca/test.js\` copies from zon2 -> current"
+    else
+        local DEST=`pwd`
+        local ORIGIN=${DEST/zon[[:digit:]]/zon$1}
+        cp $ORIGIN/$2 $DEST/$2
+    fi
 }
 
 # fuzzy find by filename
