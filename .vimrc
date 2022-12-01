@@ -1,5 +1,6 @@
 " Hi mom
 runtime vimrc_zon.vim
+runtime coc_settings.vim
 set guifont=Jet\ Brains\ Mono\ NL\ 12
 colorscheme slate
 set nu rnu
@@ -22,35 +23,32 @@ nnoremap <Leader>b :bufdo
 " List contents of all registers (that typically contain pasteable text).
 nnoremap <silent> "" :registers "0123456789*+.:%#-/=_<CR>
 
-    set nocompatible              " be iMproved, required
-    filetype off                  " required
-    set rtp+=~/.vim/bundle/Vundle.vim
-    call vundle#begin()
-    Plugin 'VundleVim/Vundle.vim'
-    Plugin 'scrooloose/nerdtree'
-    Bundle 'geoffharcourt/vim-matchit'
-    Plugin 'pangloss/vim-javascript'
-    Plugin 'leafgarland/typescript-vim'
-    Plugin 'maxmellon/vim-jsx-pretty'
-    Plugin 'SirVer/ultisnips'
-    Plugin 'mlaursen/vim-react-snippets'
-    Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plugin 'junegunn/fzf.vim'
-    Plugin 'tpope/vim-surround'
-    Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
-    Plugin 'lilydjwg/colorizer'
-    Plugin 'puremourning/vimspector'
-    if filereadable(expand("~/vundle.vim"))
-        source ~/vundle.vim
-    endif
-    map <C-n> :NERDTreeToggle<CR>
-    call vundle#end()
-    filetype plugin indent on
+set nocompatible              " be iMproved, required
+filetype off                  " required
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Bundle 'geoffharcourt/vim-matchit'
+Plugin 'pangloss/vim-javascript'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'maxmellon/vim-jsx-pretty'
+Plugin 'mlaursen/vim-react-snippets'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
+Plugin 'lilydjwg/colorizer'
+Plugin 'puremourning/vimspector'
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+if filereadable(expand("~/vundle.vim"))
+    source ~/vundle.vim
+endif
+map <C-n> :NERDTreeToggle<CR>
+call vundle#end()
+filetype plugin indent on
 
-    colorscheme material
-    let g:material_theme_style='ocean'
-    let g:material_terminal_italics=1
-    let g:UltiSnipsExpandTrigger="<tab>"
-    let g:UltiSnipsJumpForwardTrigger="<tab>"
-    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:material_theme_style='ocean'
+let g:material_terminal_italics=1
+colorscheme material
 
