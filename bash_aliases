@@ -73,3 +73,30 @@ function finode {
         echo ${data[index]}
     done
 }
+
+alias v="mvim"
+alias vrc="mvim $HOME/.vimrc"
+alias gvrc="mvim $HOME/.gvimrc"
+alias zrc="mvim $HOME/.zshrc"
+alias omzconf="mvim $HOME/.oh-my-zsh"
+alias cdr="cd \$(git rev-parse --show-toplevel)" # cd to git root
+alias cdt="cd $HOME/triplewhale"
+alias rgs="rg --no-heading --max-columns=150 $@"
+alias n="mvim $HOME/notes.md"
+alias ff="find . -maxdepth 1000 * | fzf --sync | mvim -o"
+
+# Git
+alias ga="git add ."
+alias gbd="git branch --delete $@"
+alias gc="git checkout $@"
+alias gcm="git checkout master"
+alias gd="git difftool"
+alias gdh="git difftool HEAD"
+alias gds="git difftool --staged"
+alias gdm="git difftool origin/master"
+alias gp="git pull $@"
+alias gs="git status"
+alias gmm="git co master && git pull && git co - && git merge master"
+alias gpsu="git push --set-upstream origin \$(current_branch)"
+
+source ~/.tw_cli_completion
