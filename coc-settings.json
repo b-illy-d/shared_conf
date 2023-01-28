@@ -1,0 +1,9 @@
+{
+  "diagnostic.showUnused": false,
+  "coc.preferences.renameFillCurrent": false,
+  "codeLens.enable": true,
+  "diagnostic.hintSign": ">>",
+  "diagnostic.errorSign": "!!",
+  "diagnostic.warningSign": "⚠",
+  "diagnostic.locationlistLevel": "warning"
+}
