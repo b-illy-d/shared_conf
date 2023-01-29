@@ -116,8 +116,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-alias v=code
-
 # figure out which services to release (run from within zon tree)
 function file2host {
     cdr && cd pkg && node system/scripts/file2host.js

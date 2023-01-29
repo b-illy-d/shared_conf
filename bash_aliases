@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # edit conf files
-alias vimrc='g ~/.vimrc'
-alias bash_aliases='g ~/.bash_aliases'
+alias vimrc='v ~/.vimrc'
+alias bash_aliases='v ~/.bash_aliases'
 alias k='kubectl'
 
 # change zon tree:
@@ -74,18 +74,18 @@ function finode {
     done
 }
 
-alias v="mvim"
-alias vrc="mvim $HOME/.vimrc"
-alias gvrc="mvim $HOME/.gvimrc"
+alias vrc="v $HOME/.vimrc"
+alias gvrc="v $HOME/.gvimrc"
 alias zrc="mvim $HOME/.zshrc"
 alias omzconf="mvim $HOME/.oh-my-zsh"
 alias cdr="cd \$(git rev-parse --show-toplevel)" # cd to git root
 alias cdt="cd $HOME/triplewhale"
 alias rgs="rg --no-heading --max-columns=150 $@"
-alias n="mvim $HOME/notes.md"
-alias ff="find . -maxdepth 1000 * | fzf --sync | mvim -o"
+alias n="v $HOME/notes.md"
+alias ff="find . -maxdepth 1000 * | fzf --sync | v -o"
 
 # Git
+alias g="git $@"
 alias ga="git add ."
 alias gbd="git branch --delete $@"
 alias gc="git checkout $@"
