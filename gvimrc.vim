@@ -1,3 +1,5 @@
+set guioptions=Aci
+
 " OneDark
 let g:onedark_hide_endofbuffer=1
 let g:onedark_color_overrides = {
