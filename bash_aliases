@@ -98,5 +98,6 @@ alias gp="git pull $@"
 alias gs="git status"
 alias gmm="git co master && git pull && git co - && git merge master"
 alias gpsu="git push --set-upstream origin \$(current_branch)"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
 
 source ~/.tw_cli_completion
