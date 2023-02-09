@@ -1,6 +1,7 @@
 " Hi mom
 runtime coc_settings.vim
 runtime buftabline_settings.vim
+runtime mergetool_settings.vim
 set guifont=Jetbrains\ Mono:h16
 colorscheme slate
 set nu rnu
@@ -63,6 +64,7 @@ Plug 'preservim/nerdtree' |
     \ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'prettier/vim-prettier', {
     \ 'do': 'yarn install --frozen-lockfile --production' }
+Plug 'samoshkin/vim-mergetool'
 
 map <C-n> :NERDTreeToggle<CR>
 
@@ -115,6 +117,10 @@ nnoremap <leader>G :Grepper -tool rg -open -switch -cword -noprompt<cr>
 imap <D-]> <M-]>
 imap <D-[> <M-[>
 
+" diff navigation
+nmap <expr> <Tab> &diff ? ']c' : '<Tab>'
+nmap <expr> <S-Tab> &diff ? '[c' : '<S-Tab>'
+
 " I always type these too quick
 command! W :w
 command! WQ :w
@@ -140,6 +146,4 @@ let g:NERDTreeGitStatusConcealBrackets = 1 " default: 0
 if &diff
     set diffopt+=iwhite
     set cursorline
-    map <Tab> ]c
-    map <S-Tab> [c
 endif
