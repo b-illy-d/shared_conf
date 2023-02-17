@@ -4,12 +4,29 @@ runtime buftabline_settings.vim
 runtime mergetool_settings.vim
 set guifont=Jetbrains\ Mono:h16
 colorscheme slate
-set nu rnu
-set scrolloff=10
-set tabstop=4 softtabstop=4 expandtab smartindent
-set autowrite
-" opening a new buffer keeps the current one open but hides it
+
+" haters gonna hate
 set hidden
+
+" setglobal relativenumber
+autocmd WinEnter * :setlocal relativenumber
+autocmd WinLeave,FocusLost * :setlocal number
+autocmd InsertEnter * :setlocal number
+autocmd InsertLeave * :setlocal relativenumber
+
+function! g:ToggleNuMode()
+  if(&relativenumber == 1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
+map <C-l> :call g:ToggleNuMode()<CR>
+
+set scrolloff=10
+
+set autowrite
 if &diff
     set lines=94 columns=180
 else
@@ -17,16 +34,15 @@ else
 endif
 set hlsearch
 set history=100
+" only affects insert mode
 set backspace=indent,eol,start
 
 " by default, the indent is 2 spaces. 
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
-
-" for html/rb files, 2 spaces
-autocmd Filetype html setlocal ts=2 sw=2 expandtab
-autocmd Filetype ruby setlocal ts=2 sw=2 expandtab
+set expandtab
+set smartindent
 
 set nocompatible              " be iMproved, required
 
