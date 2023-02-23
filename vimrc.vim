@@ -8,15 +8,16 @@ colorscheme slate
 " haters gonna hate
 set hidden
 
-" setglobal relativenumber
-autocmd WinEnter * :setlocal relativenumber
-autocmd WinLeave,FocusLost * :setlocal number
-autocmd InsertEnter * :setlocal number
+" show line numbers
+set number
+autocmd BufEnter * :setlocal relativenumber
+autocmd BufLeave,FocusLost * :setlocal norelativenumber
+autocmd InsertEnter * :setlocal norelativenumber
 autocmd InsertLeave * :setlocal relativenumber
 
 function! g:ToggleNuMode()
   if(&relativenumber == 1)
-    set number
+    set norelativenumber
   else
     set relativenumber
   endif
@@ -72,6 +73,7 @@ Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'leafgarland/typescript-vim'
 Plug 'lilydjwg/colorizer'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'mhinz/vim-grepper'
 Plug 'mlaursen/vim-react-snippets'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
