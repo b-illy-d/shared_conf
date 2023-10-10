@@ -83,10 +83,7 @@ Plug 'preservim/nerdtree' |
 Plug 'prettier/vim-prettier', {
     \ 'do': 'yarn install --frozen-lockfile --production' }
 Plug 'samoshkin/vim-mergetool'
-
-map <C-n> :NERDTreeToggle<CR>
-
-map <Leader>f :FZF<CR>
+Plug 'tommcdo/vim-fugitive-blame-ext'
 
 " Initialize plugin system
 " - Automatically executes `filetype plugin indent on` and `syntax enable`.
@@ -95,6 +92,24 @@ call plug#end()
 runtime prettier_settings.vim
 runtime lightline_settings.vim
 
+map <C-t> :NERDTreeToggle<CR>
+
+let g:VM_maps = {}
+let g:VM_maps['Find Under']                  = '<C-n>'
+let g:VM_maps['Find Subword Under']          = '<C-n>'
+let g:VM_maps["Select All"]                  = '\\A' 
+let g:VM_maps["Start Regex Search"]          = '\\/'
+let g:VM_maps["Add Cursor Down"]             = '<C-Down>'
+let g:VM_maps["Add Cursor Up"]               = '<C-Up>'
+let g:VM_maps["Add Cursor At Pos"]           = '\\\'
+
+let g:VM_maps["Visual Regex"]                = '\\/'
+let g:VM_maps["Visual All"]                  = '\\A' 
+let g:VM_maps["Visual Add"]                  = '\\a'
+let g:VM_maps["Visual Find"]                 = '\\f'
+let g:VM_maps["Visual Cursors"]              = '\\c'
+
+map <Leader>f :FZF<CR>
 let g:fzf_layout = { 'down': '50%' }
 
 " Replace
