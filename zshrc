@@ -131,8 +131,6 @@ eval "$(pyenv init -)"
 source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
-alias kc="kubectl"
-
 # ssh agent 
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`

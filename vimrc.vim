@@ -84,6 +84,7 @@ Plug 'prettier/vim-prettier', {
     \ 'do': 'yarn install --frozen-lockfile --production' }
 Plug 'samoshkin/vim-mergetool'
 Plug 'tommcdo/vim-fugitive-blame-ext'
+Plug 'purescript-contrib/purescript-vim'
 
 " Initialize plugin system
 " - Automatically executes `filetype plugin indent on` and `syntax enable`.

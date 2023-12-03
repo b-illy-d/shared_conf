@@ -10,7 +10,7 @@ function finode {
     done
 }
 
-alias bash_aliases='v ~/.bash_aliases'
+alias bash_aliases='v ~/shared_conf/bash_aliases'
 alias vrc="v $HOME/.vimrc"
 alias gvrc="v $HOME/.gvimrc"
 alias zrc="mvim $HOME/.zshrc"
@@ -33,7 +33,6 @@ alias g="git $@"
 alias ga="git add ."
 alias gbd="git branch --delete $@"
 alias gc="git checkout $@"
-alias gcm="git checkout master"
 alias gd="git difftool"
 alias gdh="git difftool HEAD"
 alias gds="git difftool --staged"
@@ -42,7 +41,7 @@ alias gp="git pull $@"
 alias gs="git status"
 alias gmm="git co master && git pull && git co - && git merge master"
 alias gpsu="git push --set-upstream origin \$(current_branch)"
-alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 
 source ~/.tw_cli_completion
 
