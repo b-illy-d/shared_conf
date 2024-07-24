@@ -1,17 +1,6 @@
 set guioptions=Aci
 
-" OneDark
-let g:onedark_hide_endofbuffer=1
-let g:onedark_color_overrides = {
-\ "background": {"gui": "#1A1C21", "cterm": "235", "cterm16": "0" },
-\}
-
-" Material
-let g:material_theme_style='ocean-community'
-let g:material_terminal_italics=1
-
 syntax on
-colorscheme onedark
 
 hi DiffAdd      guifg=#aaff88  guibg=#003300  gui=none
 hi DiffChange   guifg=NONE     guibg=NONE     gui=none

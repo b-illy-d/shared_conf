@@ -2,8 +2,9 @@
 runtime coc_settings.vim
 runtime buftabline_settings.vim
 runtime mergetool_settings.vim
-set guifont=Jetbrains\ Mono:h16
-colorscheme slate
+runtime python.vim
+runtime typescript.vim
+set guifont=Hack:h16
 
 " haters gonna hate
 set hidden
@@ -29,7 +30,7 @@ set scrolloff=10
 
 set autowrite
 if &diff
-    set lines=94 columns=180
+    set lines=94 columns=200
 else
     set lines=94 columns=100
 endif
@@ -60,16 +61,19 @@ call plug#begin()
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-flagship'
+Plug 'tpope/vim-repeat'
+Plug 'svermeulen/vim-subversive'
+Plug 'git@github.com:tpope/vim-speeddating'
 Plug 'ap/vim-buftabline'
 Plug 'github/copilot.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'https://github.com/adelarsq/vim-matchit'
-Plug 'itchyny/lightline.vim'
-Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'leafgarland/typescript-vim'
 Plug 'lilydjwg/colorizer'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -81,10 +85,19 @@ Plug 'pangloss/vim-javascript'
 Plug 'preservim/nerdtree' |
     \ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'prettier/vim-prettier', {
-    \ 'do': 'yarn install --frozen-lockfile --production' }
+    \ 'do': 'npm install' }
 Plug 'samoshkin/vim-mergetool'
 Plug 'tommcdo/vim-fugitive-blame-ext'
 Plug 'purescript-contrib/purescript-vim'
+
+" Python
+Plug 'vim-scripts/indentpython.vim'
+Plug 'nvie/vim-flake8'
+
+" Colorschemes
+Plug 'sainnhe/everforest'
+Plug 'sainnhe/sonokai'
+Plug 'sonph/onehalf', { 'rtp': 'vim/' }
 
 " Initialize plugin system
 " - Automatically executes `filetype plugin indent on` and `syntax enable`.
@@ -111,6 +124,7 @@ let g:VM_maps["Visual Find"]                 = '\\f'
 let g:VM_maps["Visual Cursors"]              = '\\c'
 
 map <Leader>f :FZF<CR>
+let $FZF_DEFAULT_COMMAND='find . \( -name node_modules -o -name .git -o -name dist \) -prune -o -print'
 let g:fzf_layout = { 'down': '50%' }
 
 " Replace
@@ -128,19 +142,15 @@ nnoremap <Leader>b :bufdo
 
 " List contents of all registers (that typically contain pasteable text).
 nnoremap <silent> "" :registers "0123456789*+.:%#-/=_<CR>
-nnoremap <Leader>t :below term<CR>
+nnoremap <Leader>t :rightb vertical terminal<CR>
 
 "shortcut for switching between code and terminal
 noremap <C-/> <C-w>j
 tnoremap <C-/> <C-w>kerm<CR>
 
 " comment and un-comment lines
-command! -range Comment :execute "'<,'>normal! I// <Esc>"
-command! -range UnComment :execute "'<,'>normal! ^3x"
-vnoremap <Leader>c :Comment<CR>
-vnoremap <Leader>C :UnComment<CR>
-nnoremap <Leader>c V:Comment<CR>
-nnoremap <Leader>C V:UnComment<CR>
+vnoremap <Leader>c :Commentary<CR>
+nnoremap <Leader>c :Commentary<CR>
 
 " vim-grepper
 nnoremap <Leader>g mQ:Grepper -tool rg<CR>
@@ -181,3 +191,18 @@ if &diff
     set diffopt+=iwhite
     set cursorline
 endif
+
+" theme
+if has('termguicolors')
+  set termguicolors
+endif
+set background=dark
+" let g:everforest_background = 'hard'
+" let g:everforest_enable_italic = 1
+" let g:everforest_better_performance = 1
+" let g:sonokai_style = 'espresso'
+" let g:sonokai_better_performance = 1
+" let g:edge_better_performance = 1
+" colorscheme everforest
+colorscheme onehalfdark
+let g:airline_theme='onehalfdark'

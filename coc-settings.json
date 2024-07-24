@@ -5,5 +5,20 @@
   "diagnostic.hintSign": ">>",
   "diagnostic.errorSign": "!!",
   "diagnostic.warningSign": "⚠",
-  "diagnostic.locationlistLevel": "warning"
+  "diagnostic.locationlistLevel": "warning",
+  "languageserver": {
+    "purescript": {
+      "command": "purescript-language-server",
+      "args": ["--stdio", "--config {}"],
+      "filetypes": ["purescript"],
+      "rootPatterns": ["bower.json", "psc-package.json", "spago.dhall"],
+      "settings": {
+        "purescript": {
+          "addSpagoSources": true,
+          "formatter": "purs-tidy"
+        }
+      }
+    }
+  },
+  "python.jediEnabled": false
 }

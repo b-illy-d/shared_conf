@@ -10,11 +10,31 @@ function finode {
     done
 }
 
+function jq2csv {
+  jq -rf $HOME/shared_scripts/json2csv.jq $@
+}
+
+VIM_CMD="mvim"
+
+# vim but go to the line number if pasting from a stack trace
+function v {
+  local arg="$1"
+  local file="${arg%%:*}"  # Removes line number and colon
+  local line="${arg##*:}"  # Gets the part after the last colon
+  
+  if [[ $line =~ ^[0-9]+$ ]]; then
+    $VIM_CMD +$line $file
+  else
+    $VIM_CMD $@
+  fi
+}
+alias vf="v \$(fzf)"
+
 alias bash_aliases='v ~/shared_conf/bash_aliases'
 alias vrc="v $HOME/.vimrc"
 alias gvrc="v $HOME/.gvimrc"
-alias zrc="mvim $HOME/.zshrc"
-alias omzconf="mvim $HOME/.oh-my-zsh"
+alias zrc="$VIM_CMD $HOME/.zshrc"
+alias omzconf="$VIM_CMD $HOME/.oh-my-zsh"
 
 alias rgs="rg --no-heading --max-columns=150 $@"
 alias n="v $HOME/notes.md"
@@ -27,6 +47,8 @@ alias cdb="cd $HOME/triplewhale/backend"
 alias cdp="cd $HOME/triplewhale/backend/packages"
 alias cdc="cd $HOME/triplewhale/client"
 alias cdd="cd $HOME/triplewhale/devops"
+alias cdf="cd $HOME/triplewhale/fetchers"
+alias cda="cd $HOME/triplewhale/ai"
 
 # Git
 alias g="git $@"
@@ -43,7 +65,25 @@ alias gmm="git co master && git pull && git co - && git merge master"
 alias gpsu="git push --set-upstream origin \$(current_branch)"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 
-source ~/.tw_cli_completion
+# Zed
+
+alias z="/usr/local/bin/zed $@"
+
+# ls
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
 # random
 alias k="kubectl $@"

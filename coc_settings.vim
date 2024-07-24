@@ -19,7 +19,7 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
 " goto previous and next errors
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
-nmap <silent> \f <Plug>(coc-fix-current)
+nmap <silent> \F <Plug>(coc-fix-current)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -43,6 +43,9 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
+
+" Code Actions
+nmap <leader>do <Plug>(coc-codeaction)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
