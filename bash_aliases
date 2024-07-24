@@ -65,6 +65,8 @@ alias gmm="git co master && git pull && git co - && git merge master"
 alias gpsu="git push --set-upstream origin \$(current_branch)"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 
+alias lg="lazygit"
+
 # Zed
 
 alias z="/usr/local/bin/zed $@"
