@@ -1,10 +1,12 @@
-" Hi mom
-runtime coc_settings.vim
-runtime buftabline_settings.vim
-runtime mergetool_settings.vim
-runtime python.vim
-runtime typescript.vim
 set guifont=Hack:h16
+" Hi mom
+source $HOME/shared_conf/buftabline_settings.vim
+source $HOME/shared_conf/coc_settings.vim
+source $HOME/shared_conf/lightline_settings.vim
+source $HOME/shared_conf/mergetool_settings.vim
+source $HOME/shared_conf/prettier_settings.vim
+source $HOME/shared_conf/python.vim
+source $HOME/shared_conf/typescript.vim
 
 " haters gonna hate
 set hidden
@@ -67,28 +69,34 @@ Plug 'tpope/vim-flagship'
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-subversive'
 Plug 'git@github.com:tpope/vim-speeddating'
-Plug 'ap/vim-buftabline'
 Plug 'github/copilot.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'https://github.com/adelarsq/vim-matchit'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'leafgarland/typescript-vim'
 Plug 'lilydjwg/colorizer'
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'vim-scripts/Rainbow-Parenthesis'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'mhinz/vim-grepper'
-Plug 'mlaursen/vim-react-snippets'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'
-Plug 'preservim/nerdtree' |
-    \ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'prettier/vim-prettier', {
     \ 'do': 'npm install' }
-Plug 'samoshkin/vim-mergetool'
-Plug 'tommcdo/vim-fugitive-blame-ext'
+Plug 'puremourning/vimspector'
 Plug 'purescript-contrib/purescript-vim'
+Plug 'ap/vim-buftabline'
+
+" Git
+Plug 'tommcdo/vim-fugitive-blame-ext'
+Plug 'preservim/nerdtree' |
+    \ Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'samoshkin/vim-mergetool'
+
+" Node/JS
+Plug 'leafgarland/typescript-vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'mlaursen/vim-react-snippets'
 
 " Python
 Plug 'vim-scripts/indentpython.vim'
@@ -102,9 +110,6 @@ Plug 'sonph/onehalf', { 'rtp': 'vim/' }
 " Initialize plugin system
 " - Automatically executes `filetype plugin indent on` and `syntax enable`.
 call plug#end()
-
-runtime prettier_settings.vim
-runtime lightline_settings.vim
 
 map <C-t> :NERDTreeToggle<CR>
 
@@ -143,6 +148,19 @@ nnoremap <Leader>b :bufdo
 " List contents of all registers (that typically contain pasteable text).
 nnoremap <silent> "" :registers "0123456789*+.:%#-/=_<CR>
 nnoremap <Leader>t :rightb vertical terminal<CR>
+
+" Vimspector
+nnoremap <Leader>dd :call vimspector#Launch()<CR>
+nnoremap <Leader>de :call vimspector#Reset()<CR>
+nnoremap <Leader>dc :call vimspector#Continue()<CR>
+
+nnoremap <Leader>dt :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <Leader>dT :call vimspector#ClearBreakpoints()<CR>
+
+nmap <Leader>dk <Plug>VimspectorRestart
+nmap <Leader>dh <Plug>VimspectorStepOut
+nmap <Leader>dl <Plug>VimspectorStepInto
+nmap <Leader>dj <Plug>VimspectorStepOver
 
 "shortcut for switching between code and terminal
 noremap <C-/> <C-w>j
@@ -205,4 +223,6 @@ set background=dark
 " let g:edge_better_performance = 1
 " colorscheme everforest
 colorscheme onehalfdark
-let g:airline_theme='onehalfdark'
+
+" rainbow parentheses
+runtime plugged/RainbowParenthesis/RainbowParenthsis.vim

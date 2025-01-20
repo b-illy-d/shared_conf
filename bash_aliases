@@ -31,12 +31,14 @@ function v {
 alias vf="v \$(fzf)"
 
 alias bash_aliases='v ~/shared_conf/bash_aliases'
+alias bashalias='v ~/shared_conf/bash_aliases'
 alias vrc="v $HOME/.vimrc"
 alias gvrc="v $HOME/.gvimrc"
 alias zrc="$VIM_CMD $HOME/.zshrc"
 alias omzconf="$VIM_CMD $HOME/.oh-my-zsh"
 
 alias rgs="rg --no-heading --max-columns=150 $@"
+alias rgsi="rg --no-heading --max-columns=150 --ignore-case $@"
 alias n="v $HOME/notes.md"
 alias ff="find . -maxdepth 1000 * | fzf --sync | v -o"
 
@@ -44,11 +46,14 @@ alias ff="find . -maxdepth 1000 * | fzf --sync | v -o"
 alias cdr="cd \$(git rev-parse --show-toplevel)" # cd to git root
 alias cdt="cd $HOME/triplewhale"
 alias cdb="cd $HOME/triplewhale/backend"
-alias cdp="cd $HOME/triplewhale/backend/packages"
+alias cdp="cd $HOME/triplewhale/packages"
 alias cdc="cd $HOME/triplewhale/client"
 alias cdd="cd $HOME/triplewhale/devops"
-alias cdf="cd $HOME/triplewhale/fetchers"
+alias cdf="cd $HOME/triplewhale/triplewhale-fetchers"
 alias cda="cd $HOME/triplewhale/ai"
+alias cdx="cd $HOME/triplewhale/triple-print-js"
+alias cdbs="cd $HOME/triplewhale/backstage"
+alias cdad="cd $HOME/triplewhale/admin"
 
 # Git
 alias g="git $@"
@@ -61,9 +66,11 @@ alias gds="git difftool --staged"
 alias gdm="git difftool origin/master"
 alias gp="git pull $@"
 alias gs="git status"
-alias gmm="git co master && git pull && git co - && git merge master"
+alias gmm="git merge origin/master"
 alias gpsu="git push --set-upstream origin \$(current_branch)"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
+alias gci="git commit -m"
+alias gca="git add . && git commit -m $@"
 
 alias lg="lazygit"
 

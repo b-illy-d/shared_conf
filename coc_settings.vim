@@ -1,5 +1,9 @@
 " Hi mom
-let g:coc_disable_startup_warning = 1
+
+" Install shared coc-settings.json
+call system('cp ' . expand('$HOME/shared_conf/coc-settings.json') . ' ' . expand('$HOME/.vim/coc-settings.json'))
+
+let g:coc_disable_startup_warning = 0
 let g:coc_global_extensions = [
   \ 'coc-tsserver'
   \ ]
@@ -75,3 +79,13 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+autocmd ColorScheme *
+      \ hi CocErrorHighlight gui=underline
+      \ | hi CocWarningHighlight gui=underline
+      \ | hi CocInfoHighlight gui=underline
+      \ | hi CocHintHighlight gui=underline
+      \ | hi CocErrorVirtualText guifg=#af0000 gui=italic
+      \ | hi CocWarningVirtualText guifg=#d75f00 gui=italic
+      \ | hi CocInfoVirtualText guifg=#005f87 gui=italic
+      \ | hi CocHintVirtualText guifg=#afd7df gui=italic

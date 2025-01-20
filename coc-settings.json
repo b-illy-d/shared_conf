@@ -6,12 +6,22 @@
   "diagnostic.errorSign": "!!",
   "diagnostic.warningSign": "⚠",
   "diagnostic.locationlistLevel": "warning",
+  "diagnostic.virtualTextPrefix": "• ",
   "languageserver": {
     "purescript": {
       "command": "purescript-language-server",
-      "args": ["--stdio", "--config {}"],
-      "filetypes": ["purescript"],
-      "rootPatterns": ["bower.json", "psc-package.json", "spago.dhall"],
+      "args": [
+        "--stdio",
+        "--config {}"
+      ],
+      "filetypes": [
+        "purescript"
+      ],
+      "rootPatterns": [
+        "bower.json",
+        "psc-package.json",
+        "spago.dhall"
+      ],
       "settings": {
         "purescript": {
           "addSpagoSources": true,
@@ -20,5 +30,54 @@
       }
     }
   },
+  "suggest.removeDuplicateItems": true,
+  "suggest.completionItemKindLabels": {
+    "keyword": "\uf1de",
+    "variable": "\ue79b",
+    "value": "\uf89f",
+    "operator": "\u03a8",
+    "constructor": "\uf0ad",
+    "function": "\u0192",
+    "reference": "\ufa46",
+    "constant": "\uf8fe",
+    "method": "\uf09a",
+    "struct": "\ufb44",
+    "class": "\uf0e8",
+    "interface": "\uf417",
+    "text": "\ue612",
+    "enum": "\uf435",
+    "enumMember": "\uf02b",
+    "module": "\uf40d",
+    "color": "\ue22b",
+    "property": "\ue624",
+    "field": "\uf9be",
+    "unit": "\uf475",
+    "event": "\ufacd",
+    "file": "\uf723",
+    "folder": "\uf114",
+    "snippet": "\ue60b",
+    "typeParameter": "\uf728",
+    "default": "\uf29c"
+  },
+  "codeLens.separator": "🔍",
+  "coc.preferences.jumpCommand": "drop",
+  "coc.preferences.rootPatterns": [
+    ".git",
+    ".vscode"
+  ],
+  "coc.preferences.formatOnSave": true,
+  "diagnostic.checkCurrentLine": false,
+  "diagnostic.messageTarget": "float",
+  "diagnostic.separateRelatedInformationAsDiagnostics": false,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "[python]": {
+    "inlayHint.enable": false,
+    "inlayHint.enableParameter": false
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
   "python.jediEnabled": false
 }
