@@ -1,8 +1,8 @@
 # Hi Mom
 
 # If you come from bash you might have to change your $PATH.
- export PATH=$HOME/bin:/usr/local/bin:$PATH
- export PATH=$HOME/shared_scripts/bin:$PATH
+ export PATH=$PATH:$HOME/bin:/usr/local/bin
+ export PATH=$PATH:$HOME/shared_scripts/bin
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -53,7 +53,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 # You can also set it to another string to have that shown instead of the default red dots.
 # e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories

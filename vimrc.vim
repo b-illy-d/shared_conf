@@ -102,6 +102,9 @@ Plug 'mlaursen/vim-react-snippets'
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
 
+" Go
+Plug 'fatih/vim-go'
+
 " Colorschemes
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'

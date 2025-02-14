@@ -97,3 +97,4 @@ alias l='ls -CF'
 # random
 alias k="kubectl $@"
 
+alias btoa="echo $@ | base64 -d"
