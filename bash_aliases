@@ -60,6 +60,8 @@ alias g="git $@"
 alias ga="git add ."
 alias gbd="git branch --delete $@"
 alias gc="git checkout $@"
+alias gb="git switch $@"
+alias gbn="git switch -c $@"
 alias gd="git difftool"
 alias gdh="git difftool HEAD"
 alias gds="git difftool --staged"
@@ -71,11 +73,58 @@ alias gpsu="git push --set-upstream origin \$(current_branch)"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 alias gci="git commit -m"
 alias gca="git add . && git commit -m $@"
-
 alias lg="lazygit"
 
-# Zed
+#Github
+newpr() {
+  local branch=$(git rev-parse --abbrev-ref HEAD)
+  local repo_base=$(git rev-parse --show-toplevel)
+  local pr_template="pull_request_template.md"
+  local body_arg=""
 
+  if [[ -f "$pr_template" ]]; then
+    body_arg="--template=$pr_template"
+  fi
+
+  gh pr create --base master --head "$branch" --title "$1" $body_arg
+}
+
+mergepr() {
+  local pr_number=""
+  local method="squash"
+  local title=""
+
+  while getopts "n:m:" opt; do
+    case "$opt" in
+      n) pr_number="$OPTARG" ;;
+      m) method="$OPTARG" ;; 
+      *) echo "Usage: mergepr [-n PR_NUMBER] [-m METHOD] [TITLE]" && return 1 ;;
+    esac
+  done
+  shift $((OPTIND - 1)) 
+
+  if [[ -n "$1" ]]; then
+    title="$1"
+  fi
+
+  if [[ -z "$pr_number" ]]; then
+    pr_number=$(gh pr view --json number -q '.number' 2>/dev/null)
+  fi
+
+  if [[ -z "$pr_number" ]]; then
+    echo "❌ No pull request found, and no PR number provided with -n."
+    return 1
+  fi
+
+  if [[ -z "$title" ]]; then
+    title="Merging PR #$pr_number"
+  fi
+
+  echo "🚀 Merging PR #$pr_number using '$method' with title: \"$title\"..."
+  gh pr merge "$pr_number" --admin --"$method" --subject "$title"
+}
+
+# Zed
 alias z="/usr/local/bin/zed $@"
 
 # ls
@@ -98,3 +147,22 @@ alias l='ls -CF'
 alias k="kubectl $@"
 
 alias btoa="echo $@ | base64 -d"
+
+# Whoa
+        # --line-range="$((line - 2)):$((line + 2))" \
+frg() {
+  local result
+  result=$(rg -n -H . --color=always | \
+    fzf \
+      --ansi \
+      --delimiter : \
+      --preview "fzf_bat_preview {1} {2}" \
+      --preview-window=right:60%:wrap)
+
+  if [[ -n "$result" ]]; then
+    local file line
+    file=$(echo "$result" | cut -d: -f1)
+    line=$(echo "$result" | cut -d: -f2)
+    mvim +"$line" "$file"
+  fi
+}

@@ -32,9 +32,9 @@ set scrolloff=10
 
 set autowrite
 if &diff
-    set lines=94 columns=200
+    set columns=200
 else
-    set lines=94 columns=100
+    set columns=100
 endif
 set hlsearch
 set history=100
@@ -59,7 +59,8 @@ call plug#begin()
 "   - e.g. `call plug#begin('~/.vim/plugged')`
 "   - Avoid using standard Vim directory names like 'plugin'
 
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'jceb/vim-orgmode'
+
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -190,7 +191,9 @@ nmap <expr> <S-Tab> &diff ? '[c' : '<S-Tab>'
 command! W :w
 command! WQ :w
 command! QW :w
-command! Q :w
+
+" Quit all windows (dangerous!) in the current macOS window
+command Q :qa!
 
 " NERDTreeGit
 let g:NERDTreeGitStatusIndicatorMapCustom = {
