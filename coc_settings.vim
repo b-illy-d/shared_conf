@@ -88,4 +88,4 @@ autocmd ColorScheme *
       \ | hi CocErrorVirtualText guifg=#af0000 gui=italic
       \ | hi CocWarningVirtualText guifg=#d75f00 gui=italic
       \ | hi CocInfoVirtualText guifg=#005f87 gui=italic
-      \ | hi CocHintVirtualText guifg=#afd7df gui=italic
+      \ | hi CocHintVirtualText guifg=#666633 gui=italic

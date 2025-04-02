@@ -1,0 +1,44 @@
+#!/bin/bash
+
+k () {
+  local cluster=${1}
+  local namespace=${2}
+
+  case ${cluster} in
+    "s" | "sonic" )
+      context="prod-sonic"
+      ;;
+    "k" | "knative" )
+      context="prod-knative"
+      ;;
+    "p" | "pipeline" )
+      context="prod-pipelines"
+      ;;
+    "t" | "temporal" )
+      context="prod-temporal"
+      ;;
+    "b" | "backend" )
+      context="prod-backend"
+      ;;
+    "ss" | "sonic-staging" )
+      context="staging-sonic"
+      ;;
+    "ks" | "knative-staging" )
+      context="staging-knative"
+      ;;
+    "ps" | "pipeline-staging" )
+      context="staging-pipelines"
+      ;;
+    "ts" | "temporal-staging" )
+      context="staging-temporal"
+      ;;
+    "bs" | "backend-staging" )
+      context="staging-backend"
+      ;;
+    *)
+      echo "Usage: k <cluster> <namespace>"
+      return
+      ;;
+  esac
+  k9s 
+}

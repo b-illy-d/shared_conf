@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source $HOME/shared_conf/bash_aliases_tw_k9s
+
 function regex { gawk 'match($0,/'$1'/, ary) {print ary['${2:-'0'}']}'; }
 
 # remind myself of a way much faster than find . -inum
@@ -68,7 +70,7 @@ alias gds="git difftool --staged"
 alias gdm="git difftool origin/master"
 alias gp="git pull $@"
 alias gs="git status"
-alias gmm="git merge origin/master"
+alias gmm="git pull && git merge origin/master"
 alias gpsu="git push --set-upstream origin \$(current_branch)"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 alias gci="git commit -m"
@@ -86,13 +88,16 @@ newpr() {
     body_arg="--template=$pr_template"
   fi
 
-  gh pr create --base master --head "$branch" --title "$1" $body_arg
+  local title=${1:-"$(git log -1 --pretty=%B)"}
+  echo "🚀 Creating PR for branch '$branch' with title: \"$title\"..."
+
+  gh pr create --base master --head "$branch" --title "$title" $body_arg
 }
 
 mergepr() {
   local pr_number=""
   local method="squash"
-  local title=""
+  local title=${1:-"$(git log -1 --pretty=%B)"}
 
   while getopts "n:m:" opt; do
     case "$opt" in
@@ -102,10 +107,6 @@ mergepr() {
     esac
   done
   shift $((OPTIND - 1)) 
-
-  if [[ -n "$1" ]]; then
-    title="$1"
-  fi
 
   if [[ -z "$pr_number" ]]; then
     pr_number=$(gh pr view --json number -q '.number' 2>/dev/null)

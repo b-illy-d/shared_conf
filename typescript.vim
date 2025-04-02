@@ -1,3 +1,11 @@
 " set tsc to makeprg
-let g:typescript_compiler_binary = 'tsc'
-let g:typescript_compiler_options = '--noEmit --resolveJsonModule'
+augroup TypeScriptProject
+  autocmd!
+  autocmd BufEnter,BufRead *.ts,*.tsx call SetupTSC()
+augroup END
+
+function! SetupTSC()
+  if filereadable(findfile("tsconfig.json", ".;"))
+    let &makeprg = "npx tsc --noEmit --resolveJsonModule"
+  endif
+endfunction
