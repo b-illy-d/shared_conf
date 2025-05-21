@@ -1,8 +1,10 @@
 # Hi Mom
 
 # If you come from bash you might have to change your $PATH.
- export PATH=$PATH:$HOME/bin:/usr/local/bin
- export PATH=$PATH:$HOME/shared_scripts/bin
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+export PATH=$PATH:$HOME/bin:/usr/local/bin
+export PATH=$PATH:$HOME/shared_scripts/bin
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -114,3 +116,5 @@ fi
 /usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519 > /dev/null 2>&1
 /usr/bin/ssh-add --apple-use-keychain ~/.ssh/robobunny_ssh > /dev/null 2>&1
 
+
+. "$HOME/.local/bin/env"

@@ -10,18 +10,9 @@
   "languageserver": {
     "purescript": {
       "command": "purescript-language-server",
-      "args": [
-        "--stdio",
-        "--config {}"
-      ],
-      "filetypes": [
-        "purescript"
-      ],
-      "rootPatterns": [
-        "bower.json",
-        "psc-package.json",
-        "spago.dhall"
-      ],
+      "args": ["--stdio", "--config {}"],
+      "filetypes": ["purescript"],
+      "rootPatterns": ["bower.json", "psc-package.json", "spago.dhall"],
       "settings": {
         "purescript": {
           "addSpagoSources": true,
@@ -61,10 +52,7 @@
   },
   "codeLens.separator": "🔍",
   "coc.preferences.jumpCommand": "drop",
-  "coc.preferences.rootPatterns": [
-    ".git",
-    ".vscode"
-  ],
+  "coc.preferences.rootPatterns": [".git", ".vscode"],
   "coc.preferences.formatOnSave": true,
   "diagnostic.checkCurrentLine": false,
   "diagnostic.messageTarget": "float",
@@ -79,5 +67,9 @@
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "python.linting.mypyEnabled": true,
-  "python.jediEnabled": false
+  "python.jediEnabled": false,
+  "rust-analyzer.inlayHints.typeHints.enable": false,
+  "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.lens.enable": false,
+  "rust-analyzer.inlayHints.chainingHints.enable": false
 }

@@ -58,23 +58,23 @@ alias cdbs="cd $HOME/triplewhale/backstage"
 alias cdad="cd $HOME/triplewhale/admin"
 
 # Git
-alias g="git $@"
+alias g="git"
 alias ga="git add ."
-alias gbd="git branch --delete $@"
-alias gc="git checkout $@"
-alias gb="git switch $@"
-alias gbn="git switch -c $@"
+alias gbd="git branch --delete"
+alias gc="git checkout"
+alias gb="git switch"
+alias gbn="git switch -c"
 alias gd="git difftool"
 alias gdh="git difftool HEAD"
 alias gds="git difftool --staged"
 alias gdm="git difftool origin/master"
-alias gp="git pull $@"
+alias gp="git pull"
 alias gs="git status"
 alias gmm="git pull && git merge origin/master"
 alias gpsu="git push --set-upstream origin \$(current_branch)"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 alias gci="git commit -m"
-alias gca="git add . && git commit -m $@"
+alias gca="git add . && git commit -m"
 alias lg="lazygit"
 
 #Github
@@ -145,9 +145,10 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # random
-alias k="kubectl $@"
 
-alias btoa="echo $@ | base64 -d"
+btoa() {
+  echo $@ | base64 -d
+}
 
 # Whoa
         # --line-range="$((line - 2)):$((line + 2))" \

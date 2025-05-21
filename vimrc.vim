@@ -106,10 +106,14 @@ Plug 'nvie/vim-flake8'
 " Go
 Plug 'fatih/vim-go'
 
+" Rust
+Plug 'rust-lang/rust.vim'
+
 " Colorschemes
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim/' }
+
 
 " Initialize plugin system
 " - Automatically executes `filetype plugin indent on` and `syntax enable`.

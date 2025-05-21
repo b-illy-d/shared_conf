@@ -1,10 +1,14 @@
 #!/bin/bash
 
-k () {
-  local cluster=${1}
+k (){
+  local short_context=${1}
   local namespace=${2}
+  
+  if [[ ! $namespace =~ -ns$ ]]; then
+    namespace="${namespace}-ns"
+  fi
 
-  case ${cluster} in
+  case ${short_context} in
     "s" | "sonic" )
       context="prod-sonic"
       ;;
@@ -21,24 +25,24 @@ k () {
       context="prod-backend"
       ;;
     "ss" | "sonic-staging" )
-      context="staging-sonic"
+      context="stg-sonic"
       ;;
     "ks" | "knative-staging" )
-      context="staging-knative"
+      context="stg-knative"
       ;;
     "ps" | "pipeline-staging" )
-      context="staging-pipelines"
+      context="stg-pipelines"
       ;;
     "ts" | "temporal-staging" )
-      context="staging-temporal"
+      context="stg-temporal"
       ;;
     "bs" | "backend-staging" )
-      context="staging-backend"
+      context="stg-backend"
       ;;
     *)
-      echo "Usage: k <cluster> <namespace>"
+      exec k9s
       return
       ;;
   esac
-  k9s 
+  k9s --context=$context --namespace=$namespace
 }
