@@ -57,6 +57,12 @@ alias cdx="cd $HOME/triplewhale/triple-print-js"
 alias cdbs="cd $HOME/triplewhale/backstage"
 alias cdad="cd $HOME/triplewhale/admin"
 
+# Env -- Usage
+# le .env my_command arg1 arg2
+# le .env.local my_command arg1 arg2
+le() { env $(cat "$1" | xargs) "${@:2}"; }
+
+
 # Git
 alias g="git"
 alias ga="git add ."

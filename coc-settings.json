@@ -71,5 +71,6 @@
   "rust-analyzer.inlayHints.typeHints.enable": false,
   "rust-analyzer.inlayHints.parameterHints.enable": false,
   "rust-analyzer.lens.enable": false,
-  "rust-analyzer.inlayHints.chainingHints.enable": false
+  "rust-analyzer.inlayHints.chainingHints.enable": false,
+  "typescript.format.enable": false
 }
