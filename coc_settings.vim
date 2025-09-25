@@ -5,12 +5,12 @@ call system('cp ' . expand('$HOME/shared_conf/coc-settings.json') . ' ' . expand
 
 let g:coc_disable_startup_warning = 0
 let g:coc_global_extensions = [
-  \ 'coc-tsserver'
-  \ 'coc-pyright'
-  \ 'coc-json'
-  \ 'coc-sh'
-  \ 'coc-prettier'
-  \ ]
+      \ 'coc-tsserver',
+      \ 'coc-pyright',
+      \ 'coc-json',
+      \ 'coc-sh',
+      \ 'coc-prettier',
+      \ ]
 
 set encoding=utf-8
 set updatetime=300

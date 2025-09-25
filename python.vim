@@ -22,3 +22,5 @@ function! UseVenvIfPresent() abort
 endfunction
 autocmd BufEnter,BufReadPost *.py call UseVenvIfPresent()
 
+let g:python_highlight_all = 1
+

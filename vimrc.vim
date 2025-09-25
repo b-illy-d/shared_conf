@@ -87,6 +87,7 @@ Plug 'prettier/vim-prettier', {
 Plug 'puremourning/vimspector'
 Plug 'purescript-contrib/purescript-vim'
 Plug 'ap/vim-buftabline'
+Plug 'luochen1990/rainbow'
 
 " Git
 Plug 'tommcdo/vim-fugitive-blame-ext'
@@ -102,6 +103,9 @@ Plug 'mlaursen/vim-react-snippets'
 " Python
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
+Plug 'vim-python/python-syntax'
+Plug 'tmhedberg/SimpylFold'
+
 
 " Go
 Plug 'fatih/vim-go'
@@ -241,4 +245,4 @@ set background=dark
 colorscheme onehalfdark
 
 " rainbow parentheses
-runtime plugged/RainbowParenthesis/RainbowParenthsis.vim
+let g:rainbow_active = 1
