@@ -1,6 +1,6 @@
 let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
-let g:prettier#exec_cmd_path = "/opt/homebrew/bin/prettier"
+let g:prettier#exec_cmd_path = "/Users/billy/.nvm/versions/node/$(nvm_version)/bin/prettier"
 let g:prettier#config#print_width = 100
 let g:prettier#config#tab_width = 2
 let g:prettier#config#use_tabs = 0

@@ -191,6 +191,12 @@ imap <D-[> <M-[>
 nmap <expr> <Tab> &diff ? ']c' : '<Tab>'
 nmap <expr> <S-Tab> &diff ? '[c' : '<S-Tab>'
 
+" move lines up or down
+nnoremap <D-j> :m .+1<CR>
+vnoremap <D-j> :m '>+1<CR>gv
+nnoremap <D-k> :m .-2<CR>
+vnoremap <D-k> :m '<-2<CR>gv
+
 " I always type these too quick
 command! W :w
 command! WQ :w
