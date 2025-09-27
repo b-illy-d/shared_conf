@@ -50,12 +50,12 @@ mergepr() {
 
 # Get current branch name:
 function current_branch() {
-  git rev-parse --abbrev-ref HEAD
+  git rev-parse --abbrev-ref HEAD 2>/dev/null
 }
 
 # Checkout parent/older commit:
 function git_checkout_parent() {
-  git checkout HEAD~$1
+  git checkout HEAD~$1 2>/dev/null
 }
 
 # Checkout child/newer commit:
@@ -116,6 +116,15 @@ function git_status_short() {
   git log -${1:-3} --oneline | cat
 }
 
+# reset to origin/<current> only if in a repo
+groh() {
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "not a git repo"; return 1; }
+  local br
+  br=$(current_branch) || { echo "no branch"; return 1; }
+  git fetch --prune
+  git reset --hard "origin/${br}"
+}
+
 # Git
 alias g="git"
 alias ga="git add ."
@@ -130,11 +139,9 @@ alias gdm="git difftool origin/master"
 alias gp="git pull"
 alias gs="git status"
 alias gmm="git pull && git merge origin/master"
-alias gpsu="git push --set-upstream origin \$(current_branch)"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 alias gci="git commit -m"
 alias gca="git add . && git commit -m"
-alias groh="git reset origin/$(current_branch) --hard"
 alias grh="git reset HEAD"
 alias lg="lazygit"
 

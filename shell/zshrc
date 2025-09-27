@@ -1,7 +1,6 @@
 # Hi Mom
 
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+# env
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
@@ -10,6 +9,7 @@ else
 fi
 
 [[ -f ~/.local/bin/env ]] && source ~/.local/bin/env
+[[ -f ~/.zshenv ]] && source ~/.zshenv
 [[ -f ~/shared_conf/shell/nvm.env ]] && source ~/shared_conf/shell/nvm.env
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/shared_conf/shell/bash_aliases ]] && source ~/shared_conf/shell/bash_aliases
