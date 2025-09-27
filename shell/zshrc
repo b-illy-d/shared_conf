@@ -1,15 +1,5 @@
 # Hi Mom
 
-# If you come from bash you might have to change your $PATH.
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-export PATH=$PATH:$HOME/bin:/usr/local/bin
-export PATH=$PATH:$HOME/shared_scripts/bin
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
@@ -19,21 +9,33 @@ else
   export EDITOR='nvim'
 fi
 
-source ~/shared_conf/bash_aliases
-source ~/.tw_cli_completion
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -f ~/.local/bin/env ]] && source ~/.local/bin/env
+[[ -f ~/shared_conf/shell/nvm.env ]] && source ~/shared_conf/shell/nvm.env
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -f ~/shared_conf/shell/bash_aliases ]] && source ~/shared_conf/shell/bash_aliases
 
-# google cloud sdk path:
-source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+# --- completions (zsh + bash-compatible) ---
+# keep system dirs in $fpath so compinit exists
+typeset -U fpath
+fpath=( ~/.zfunc $fpath /opt/homebrew/share/zsh/site-functions /usr/local/share/zsh/site-functions /usr/share/zsh/site-functions )
 
-# ssh agent
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-  eval `ssh-agent -s`
-  ssh-add
-fi
+# make sure dump dir exists
+mkdir -p ~/.cache/zsh
 
-/usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519 > /dev/null 2>&1
-/usr/bin/ssh-add --apple-use-keychain ~/.ssh/robobunny_ssh > /dev/null 2>&1
+autoload -Uz compinit
+compinit -C -d ~/.cache/zsh/.zcompdump-$ZSH_VERSION
 
-. "$HOME/.local/bin/env"
+# enable bash-style completion for scripts that use `complete`
+autoload -Uz +X bashcompinit 2>/dev/null || true
+type bashcompinit >/dev/null 2>&1 && bashcompinit
+
+# pyenv init
+command -v pyenv >/dev/null && eval "$(pyenv init - zsh)"
+
+# ----- gcloud (guarded; sourcing these can be slow, so only if installed)
+GCSDK="/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
+[[ -r "$GCSDK/path.zsh.inc" ]] && source "$GCSDK/path.zsh.inc"
+[[ -r "$GCSDK/completion.zsh.inc" ]] && source "$GCSDK/completion.zsh.inc"
+
+# ----- compile rc for speed
+[[ -f ~/.zshrc.zwc && ~/.zshrc -nt ~/.zshrc.zwc ]] || zcompile ~/.zshrc

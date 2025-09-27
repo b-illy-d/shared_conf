@@ -1,12 +1,8 @@
 set guifont=Hack:h16
 " Hi mom
-source $HOME/shared_conf/buftabline_settings.vim
-source $HOME/shared_conf/coc_settings.vim
-source $HOME/shared_conf/lightline_settings.vim
-source $HOME/shared_conf/mergetool_settings.vim
-source $HOME/shared_conf/prettier_settings.vim
-source $HOME/shared_conf/python.vim
-source $HOME/shared_conf/typescript.vim
+for f in globpath($HOME . '/shared_conf/vim/', '**/*.vim', 0, 1)
+  execute 'source' f
+endfor
 
 " haters gonna hate
 set hidden

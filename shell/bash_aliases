@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source $HOME/shared_conf/bash_aliases_tw_k9s
+source $HOME/shared_conf/shell/bash_aliases_tw_k9s
 
 function regex { gawk 'match($0,/'$1'/, ary) {print ary['${2:-'0'}']}'; }
 
