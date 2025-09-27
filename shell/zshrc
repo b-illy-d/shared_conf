@@ -1,0 +1,39 @@
+# Hi Mom
+
+# If you come from bash you might have to change your $PATH.
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+export PATH=$PATH:$HOME/bin:/usr/local/bin
+export PATH=$PATH:$HOME/shared_scripts/bin
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+
+source ~/shared_conf/bash_aliases
+source ~/.tw_cli_completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# google cloud sdk path:
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+
+# ssh agent
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add
+fi
+
+/usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519 > /dev/null 2>&1
+/usr/bin/ssh-add --apple-use-keychain ~/.ssh/robobunny_ssh > /dev/null 2>&1
+
+. "$HOME/.local/bin/env"

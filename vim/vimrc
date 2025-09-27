@@ -246,3 +246,9 @@ colorscheme onehalfdark
 
 " rainbow parentheses
 let g:rainbow_active = 1
+
+" highlighting bad whitespace
+if !hlexists('BadWhitespace')
+  highlight BadWhitespace ctermbg=red guibg=#ff0000
+endif
+

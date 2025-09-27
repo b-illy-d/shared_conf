@@ -1,0 +1,217 @@
+return {
+  ---------------------------------------------------------------------------
+  -- Core editing enhancements
+  ---------------------------------------------------------------------------
+  { "tpope/vim-unimpaired" },
+  { "tpope/vim-fugitive" },
+  { "tpope/vim-surround" },
+  { "tpope/vim-repeat" },
+  { "tpope/vim-speeddating" },
+  { "svermeulen/vim-subversive" },
+  { "junegunn/vim-easy-align" },
+  { "mg979/vim-visual-multi",   branch = "master" },
+
+  ---------------------------------------------------------------------------
+  -- Commenting, motions, textobjects
+  ---------------------------------------------------------------------------
+  { "numToStr/Comment.nvim",    opts = {} },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    config = function()
+      require("ufo").setup({
+        provider_selector = function(_, _, _)
+          return { "treesitter", "indent" }
+        end,
+      })
+    end,
+  },
+
+  ---------------------------------------------------------------------------
+  -- UI and statusline
+  ---------------------------------------------------------------------------
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function() require("lualine").setup() end
+  },
+  {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function() require("bufferline").setup() end
+  },
+  { "folke/which-key.nvim",          opts = {} },
+
+  ---------------------------------------------------------------------------
+  -- File management / search
+  ---------------------------------------------------------------------------
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("nvim-tree").setup({
+        view = {
+          side = "left",
+          width = 35,
+        },
+        renderer = {
+          group_empty = true,
+        },
+        filters = {
+          dotfiles = false,
+        },
+      })
+    end,
+  },
+
+  { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+    cond = vim.fn.executable("make") == 1,
+    config = function() require("telescope").load_extension("fzf") end
+  },
+
+  ---------------------------------------------------------------------------
+  -- Git integration
+  ---------------------------------------------------------------------------
+  { "lewis6991/gitsigns.nvim",        opts = {} },
+
+  ---------------------------------------------------------------------------
+  -- Syntax highlighting and parsing
+  ---------------------------------------------------------------------------
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      "windwp/nvim-ts-autotag",
+      "hiphish/rainbow-delimiters.nvim",
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
+    opts = {
+      ensure_installed = {
+        "bash",
+        "css",
+        "go",
+        "html",
+        "javascript",
+        "jsx",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "regex",
+        "rust",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+      },
+      auto_install = true,
+      highlight = { enable = true },
+      indent = { enable = true },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "<CR>",
+          node_incremental = "<CR>",
+          scope_incremental = "<S-CR>",
+          node_decremental = "<BS>",
+        },
+      },
+
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+            ["ac"] = "@class.outer",
+            ["ic"] = "@class.inner",
+            ["al"] = "@loop.outer",
+            ["il"] = "@loop.inner",
+            ["ia"] = "@parameter.inner",
+            ["aa"] = "@parameter.outer",
+            ["is"] = "@statement.inner",
+            ["as"] = "@statement.outer",
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            ["]f"] = "@function.outer",
+            ["]c"] = "@class.outer",
+          },
+          goto_next_end = {
+            ["]F"] = "@function.outer",
+            ["]C"] = "@class.outer",
+          },
+          goto_previous_start = {
+            ["[f"] = "@function.outer",
+            ["[c"] = "@class.outer",
+          },
+          goto_previous_end = {
+            ["[F"] = "@function.outer",
+            ["[C"] = "@class.outer",
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ["<leader>a"] = "@parameter.inner",
+          },
+          swap_previous = {
+            ["<leader>A"] = "@parameter.inner",
+          },
+        },
+      },
+      config = function(_, opts)
+        require("nvim-treesitter.configs").setup(opts)
+
+        -- autotag
+        require("nvim-ts-autotag").setup()
+
+        -- rainbow-delimiters
+        local rd = require("rainbow-delimiters")
+        vim.g.rainbow_delimiters = {
+          strategy = {
+            [""] = rd.strategy["global"],
+            vim  = rd.strategy["local"],
+          },
+          query = {
+            [""] = "rainbow-delimiters",
+            lua  = "rainbow-blocks",
+          },
+          priority = { [""] = 110, lua = 110 },
+        }
+        -- jsx-aware comments
+        require("ts_context_commentstring").setup({})
+        vim.g.skip_ts_context_commentstring_module = true
+      end,
+    }
+  },
+  { "hiphish/rainbow-delimiters.nvim" },
+  { "NvChad/nvim-colorizer.lua",      opts = {} },
+
+  ---------------------------------------------------------------------------
+  -- Undo / history
+  ---------------------------------------------------------------------------
+  { "mbbill/undotree" },
+
+  ---------------------------------------------------------------------------
+  -- Formatters / linters
+  ---------------------------------------------------------------------------
+  { "stevearc/conform.nvim" },
+
+  ---------------------------------------------------------------------------
+  -- Debugging
+  ---------------------------------------------------------------------------
+  { "mfussenegger/nvim-dap" },
+  { "rcarriga/nvim-dap-ui",           dependencies = { "mfussenegger/nvim-dap" } },
+}

@@ -1,13 +1,16 @@
 au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
+    \ setlocal tabstop=4
+    \ softtabstop=4
+    \ shiftwidth=4
+    \ textwidth=88
+    \ expandtab
+    \ autoindent
+    \ fileformat=unix
 
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+augroup badws
+  autocmd!
+  autocmd BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+augroup END
 
 " --- virtualenv autodetect (.venv in project root) ---
 function! UseVenvIfPresent() abort

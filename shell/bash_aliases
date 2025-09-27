@@ -16,14 +16,13 @@ function jq2csv {
   jq -rf $HOME/shared_scripts/json2csv.jq $@
 }
 
-VIM_CMD="mvim"
-
+VIM_CMD="nvim"
 # vim but go to the line number if pasting from a stack trace
 function v {
   local arg="$1"
   local file="${arg%%:*}"  # Removes line number and colon
   local line="${arg##*:}"  # Gets the part after the last colon
-  
+
   if [[ $line =~ ^[0-9]+$ ]]; then
     $VIM_CMD +$line $file
   else
@@ -32,17 +31,19 @@ function v {
 }
 alias vf="v \$(fzf)"
 
-alias bash_aliases='v ~/shared_conf/bash_aliases'
-alias bashalias='v ~/shared_conf/bash_aliases'
-alias vrc="v $HOME/.vimrc"
-alias gvrc="v $HOME/.gvimrc"
+EDITOR_CMD="$VIM_CMD"
+
+alias bash_aliases="$EDITOR_CMD ~/shared_conf/bash_aliases"
+alias bashalias="$EDITOR_CMD ~/shared_conf/bash_aliases"
+alias vrc="$EDITOR_CMD $HOME/.vimrc"
+alias gvrc="$EDITOR_CMD $HOME/.gvimrc"
+alias nvrc="$EDITOR_CMD $HOME/.config/nvim/init.lua"
 alias zrc="$VIM_CMD $HOME/.zshrc"
 alias omzconf="$VIM_CMD $HOME/.oh-my-zsh"
 
 alias rgs="rg --no-heading --max-columns=150 $@"
 alias rgsi="rg --no-heading --max-columns=150 --ignore-case $@"
-alias n="v $HOME/notes.md"
-alias ff="find . -maxdepth 1000 * | fzf --sync | v -o"
+alias ff="find . -maxdepth 1000 * | fzf --sync | $EDITOR_CMD -o"
 
 # TW cd's
 alias cdr="cd \$(git rev-parse --show-toplevel)" # cd to git root
