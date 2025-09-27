@@ -13,6 +13,7 @@ fi
 [[ -f ~/shared_conf/shell/nvm.env ]] && source ~/shared_conf/shell/nvm.env
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/shared_conf/shell/bash_aliases ]] && source ~/shared_conf/shell/bash_aliases
+[[ -f ~/shared_conf/shell/git.sh ]] && source ~/shared_conf/shell/git.sh
 
 # --- completions (zsh + bash-compatible) ---
 # keep system dirs in $fpath so compinit exists
@@ -37,5 +38,11 @@ GCSDK="/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
 [[ -r "$GCSDK/path.zsh.inc" ]] && source "$GCSDK/path.zsh.inc"
 [[ -r "$GCSDK/completion.zsh.inc" ]] && source "$GCSDK/completion.zsh.inc"
 
-# ----- compile rc for speed
-[[ -f ~/.zshrc.zwc && ~/.zshrc -nt ~/.zshrc.zwc ]] || zcompile ~/.zshrc
+# Arrow keys: search history by current prefix
+if [[ -n ${terminfo[kcuu1]} ]]; then
+  bindkey "${terminfo[kcuu1]}" history-beginning-search-backward
+  bindkey "${terminfo[kcud1]}" history-beginning-search-forward
+fi
+bindkey '^P' history-beginning-search-backward
+bindkey '^N' history-beginning-search-forward
+

@@ -33,17 +33,23 @@ alias vf="v \$(fzf)"
 
 EDITOR_CMD="$VIM_CMD"
 
-alias bash_aliases="$EDITOR_CMD ~/shared_conf/bash_aliases"
-alias bashalias="$EDITOR_CMD ~/shared_conf/bash_aliases"
+alias bash_aliases="$EDITOR_CMD ~/shared_conf/shell/bash_aliases"
+alias bashalias="$EDITOR_CMD ~/shared_conf/shell/bash_aliases"
 alias vrc="$EDITOR_CMD $HOME/.vimrc"
 alias gvrc="$EDITOR_CMD $HOME/.gvimrc"
 alias nvrc="$EDITOR_CMD $HOME/.config/nvim/init.lua"
 alias zrc="$VIM_CMD $HOME/.zshrc"
-alias omzconf="$VIM_CMD $HOME/.oh-my-zsh"
 
+# ripgrep and find
 alias rgs="rg --no-heading --max-columns=150 $@"
 alias rgsi="rg --no-heading --max-columns=150 --ignore-case $@"
 alias ff="find . -maxdepth 1000 * | fzf --sync | $EDITOR_CMD -o"
+
+# cd
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 
 # TW cd's
 alias cdr="cd \$(git rev-parse --show-toplevel)" # cd to git root
@@ -63,75 +69,6 @@ alias cdad="cd $HOME/triplewhale/admin"
 # le .env.local my_command arg1 arg2
 le() { env $(cat "$1" | xargs) "${@:2}"; }
 
-
-# Git
-alias g="git"
-alias ga="git add ."
-alias gbd="git branch --delete"
-alias gc="git checkout"
-alias gb="git switch"
-alias gbn="git switch -c"
-alias gd="git difftool"
-alias gdh="git difftool HEAD"
-alias gds="git difftool --staged"
-alias gdm="git difftool origin/master"
-alias gp="git pull"
-alias gs="git status"
-alias gmm="git pull && git merge origin/master"
-alias gpsu="git push --set-upstream origin \$(current_branch)"
-alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
-alias gci="git commit -m"
-alias gca="git add . && git commit -m"
-alias lg="lazygit"
-
-#Github
-newpr() {
-  local branch=$(git rev-parse --abbrev-ref HEAD)
-  local repo_base=$(git rev-parse --show-toplevel)
-  local pr_template="pull_request_template.md"
-  local body_arg=""
-
-  if [[ -f "$pr_template" ]]; then
-    body_arg="--template=$pr_template"
-  fi
-
-  local title=${1:-"$(git log -1 --pretty=%B)"}
-  echo "🚀 Creating PR for branch '$branch' with title: \"$title\"..."
-
-  gh pr create --base master --head "$branch" --title "$title" $body_arg
-}
-
-mergepr() {
-  local pr_number=""
-  local method="squash"
-  local title=${1:-"$(git log -1 --pretty=%B)"}
-
-  while getopts "n:m:" opt; do
-    case "$opt" in
-      n) pr_number="$OPTARG" ;;
-      m) method="$OPTARG" ;; 
-      *) echo "Usage: mergepr [-n PR_NUMBER] [-m METHOD] [TITLE]" && return 1 ;;
-    esac
-  done
-  shift $((OPTIND - 1)) 
-
-  if [[ -z "$pr_number" ]]; then
-    pr_number=$(gh pr view --json number -q '.number' 2>/dev/null)
-  fi
-
-  if [[ -z "$pr_number" ]]; then
-    echo "❌ No pull request found, and no PR number provided with -n."
-    return 1
-  fi
-
-  if [[ -z "$title" ]]; then
-    title="Merging PR #$pr_number"
-  fi
-
-  echo "🚀 Merging PR #$pr_number using '$method' with title: \"$title\"..."
-  gh pr merge "$pr_number" --admin --"$method" --subject "$title"
-}
-
 # Zed
 alias z="/usr/local/bin/zed $@"
 
@@ -147,6 +84,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+alias ls='eza --group-directories-first --git'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF1'
@@ -175,3 +113,4 @@ frg() {
     mvim +"$line" "$file"
   fi
 }
+
