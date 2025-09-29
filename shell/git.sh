@@ -160,6 +160,7 @@ alias gds="git difftool --staged"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
 alias gmm="git pull && git merge origin/master"
 alias gp="git pull"
+alias gP="git push"
 alias grh="git reset HEAD"
 alias gs="git status"
 
