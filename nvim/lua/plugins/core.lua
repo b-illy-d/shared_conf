@@ -33,7 +33,18 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function() require("lualine").setup() end
+    config = function()
+      require("lualine").setup({
+        sections = {
+          lualine_a = { "mode" },
+          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_c = { "filename" },
+          lualine_x = { "encoding", "fileformat", "filetype" },
+          lualine_y = { require("codex").status() },
+          lualine_z = { "location" },
+        },
+      })
+    end
   },
   {
     "akinsho/bufferline.nvim",
@@ -87,7 +98,7 @@ return {
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       "windwp/nvim-ts-autotag",
-      "hiphish/rainbow-delimiters.nvim",
+      "Hiphish/rainbow-delimiters.nvim",
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
     opts = {
@@ -97,7 +108,6 @@ return {
         "go",
         "html",
         "javascript",
-        "jsx",
         "json",
         "lua",
         "markdown",
@@ -171,32 +181,32 @@ return {
           },
         },
       },
-      config = function(_, opts)
-        require("nvim-treesitter.configs").setup(opts)
+    },
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
 
-        -- autotag
-        require("nvim-ts-autotag").setup()
+      -- autotag
+      require("nvim-ts-autotag").setup()
 
-        -- rainbow-delimiters
-        local rd = require("rainbow-delimiters")
-        vim.g.rainbow_delimiters = {
-          strategy = {
-            [""] = rd.strategy["global"],
-            vim  = rd.strategy["local"],
-          },
-          query = {
-            [""] = "rainbow-delimiters",
-            lua  = "rainbow-blocks",
-          },
-          priority = { [""] = 110, lua = 110 },
-        }
-        -- jsx-aware comments
-        require("ts_context_commentstring").setup({})
-        vim.g.skip_ts_context_commentstring_module = true
-      end,
-    }
+      -- rainbow-delimiters
+      local rd = require("rainbow-delimiters")
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rd.strategy["global"],
+          vim  = rd.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua  = "rainbow-blocks",
+        },
+        priority = { [""] = 110, lua = 110 },
+      }
+      -- jsx-aware comments
+      require("ts_context_commentstring").setup({})
+      vim.g.skip_ts_context_commentstring_module = true
+    end,
   },
-  { "hiphish/rainbow-delimiters.nvim" },
+  { "Hiphish/rainbow-delimiters.nvim" },
   { "NvChad/nvim-colorizer.lua",      opts = {} },
 
   ---------------------------------------------------------------------------

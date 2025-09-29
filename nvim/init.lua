@@ -17,6 +17,7 @@ require("lazy").setup("plugins", {
   rocks = { enabled = false },
   ui = { border = "rounded" },
   change_detection = { notify = false },
+  git = { submodules = false, },
 })
 
 -- set theme first
