@@ -82,6 +82,19 @@ function git_checkout_child() {
   git checkout $child
 }
 
+function git_main_branch() {
+  local main_branch
+  if git show-ref --verify --quiet refs/heads/main; then
+    main_branch="main"
+  elif git show-ref --verify --quiet refs/heads/master; then
+    main_branch="master"
+  else
+    echo "Error: Neither 'main' nor 'master' branch exists." >&2
+    return 1
+  fi
+  echo "$main_branch"
+}
+
 # Reset the head to a previous commit (defaults to direct parent):
 function git_reset_head() {
   git reset HEAD~$2 $1
@@ -125,23 +138,30 @@ groh() {
   git reset --hard "origin/${br}"
 }
 
+gcm() {
+  local main_branch
+  main_branch=$(git_main_branch) || { echo "no main branch"; return 1; }
+  git checkout "$main_branch"
+}
+
 # Git
 alias g="git"
 alias ga="git add ."
-alias gbd="git branch --delete"
-alias gc="git checkout"
 alias gb="git switch"
+alias gbd="git branch --delete"
 alias gbn="git switch -c"
+alias gc="git checkout"
+alias gca="git add . && git commit -m"
+alias gci="git commit -m"
 alias gd="git difftool"
 alias gdh="git difftool HEAD"
-alias gds="git difftool --staged"
 alias gdm="git difftool origin/master"
-alias gp="git pull"
-alias gs="git status"
-alias gmm="git pull && git merge origin/master"
+alias gds="git difftool --staged"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local"
-alias gci="git commit -m"
-alias gca="git add . && git commit -m"
+alias gmm="git pull && git merge origin/master"
+alias gp="git pull"
 alias grh="git reset HEAD"
+alias gs="git status"
+
 alias lg="lazygit"
 
