@@ -1,15 +1,21 @@
 require("conform").setup({
   formatters_by_ft = {
+    python = { "ruff_fix", "ruff_organize_imports", "ruff_format" }, -- no black
     javascript = { "prettierd", "prettier" },
     typescript = { "prettierd", "prettier" },
     json = { "jq" },
-    python = { "ruff_format", "black" },
     go = { "gofumpt", "gofmt" },
     rust = { "rustfmt" },
     sh = { "shfmt" },
   },
+  format_on_save = {
+    timeout_ms = 1000,
+    lsp_format = "fallback",
+  },
 })
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("format_on_save", { clear = true }),
-  callback = function(args) require("conform").format({ bufnr = args.buf, lsp_fallback = true }) end,
+  callback = function(args)
+    require("conform").format({ bufnr = args.buf })
+  end,
 })

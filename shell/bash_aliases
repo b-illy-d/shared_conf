@@ -33,7 +33,7 @@ alias vf="v \$(fzf)"
 
 EDITOR_CMD="$VIM_CMD"
 
-alias bash_aliases="$EDITOR_CMD ~/shared_conf/shell/bash_aliases"
+alias bash_aliases='bash -c "$EDITOR_CMD ~/shared_conf/shell/bash_aliases; source ~/shared_conf/shell/bash_aliases"'
 alias bashalias="$EDITOR_CMD ~/shared_conf/shell/bash_aliases"
 alias vrc="$EDITOR_CMD $HOME/.vimrc"
 alias gvrc="$EDITOR_CMD $HOME/.gvimrc"
@@ -94,6 +94,17 @@ alias l='ls -CF1'
 btoa() {
   echo $@ | base64 -d
 }
+
+# python
+DEFAULT_VENV_DIR="venv"
+venv() {
+  local dir="${1:-$DEFAULT_VENV_DIR}"
+  python3 -m venv $dir
+  source $dir/bin/activate
+}
+alias py="python3"
+alias pir="pip install -r requirements.txt"
+alias activate="source ${1:-$DEFAULT_VENV_DIR}/bin/activate"
 
 # Whoa
         # --line-range="$((line - 2)):$((line + 2))" \

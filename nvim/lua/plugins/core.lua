@@ -38,9 +38,9 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
-          lualine_c = { "filename" },
+          lualine_c = { { "filename", path = 3 } },
           lualine_x = { "encoding", "fileformat", "filetype" },
-          lualine_y = { require("codex").status() },
+          lualine_y = { { function() return os.date("%H:%M") end } },
           lualine_z = { "location" },
         },
       })
