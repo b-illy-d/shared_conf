@@ -1,18 +1,60 @@
 local map = vim.keymap.set
 local tb = require("telescope.builtin")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
 
 -- Tree / Files
 map("n", "<C-t>", "<cmd>NvimTreeToggle<cr>", { desc = "File Explorer" })
 map("n", "<leader>f", tb.find_files, { desc = "files" })
 
+local function live_grep_to_qf(opts)
+  opts = opts or {}
+  opts.additional_args = vim.list_extend(opts.additional_args or {}, { "--hidden", "--glob", "!**/.git/*" })
+
+  opts.attach_mappings = function(prompt_bufnr, _)
+    actions.select_default:replace(function()
+      local picker = action_state.get_current_picker(prompt_bufnr)
+
+      -- snapshot all results for quickfix
+      local qf_items = {}
+      for entry in picker.manager:iter() do
+        table.insert(qf_items, {
+          filename = entry.path or entry.filename,
+          lnum     = entry.lnum or entry.line or 1,
+          col      = entry.col or 1,
+          text     = entry.text or entry.value,
+        })
+      end
+
+      -- chosen entry to jump to
+      local sel = action_state.get_selected_entry()
+      actions.close(prompt_bufnr)
+
+      if sel then
+        local file = sel.path or sel.filename
+        local lnum = sel.lnum or sel.line or 1
+        local col  = (sel.col or 1) - 1
+        vim.cmd("edit " .. vim.fn.fnameescape(file))
+        pcall(vim.api.nvim_win_set_cursor, 0, { lnum, math.max(col, 0) })
+      end
+
+      -- fill quickfix in the background
+      vim.fn.setqflist({}, " ", { title = "Telescope: live_grep", items = qf_items })
+      vim.cmd("cwindow | wincmd p")
+    end)
+    return true
+  end
+
+  tb.live_grep(opts)
+end
+
+
 -- Find / Replace
-map("n", "<leader>g", function() tb.live_grep({ additional_args = { "--hidden", "--glob", "!**/.git/*" } }) end,
-  { desc = "grep" })
+map("n", "<leader>g", function()
+  live_grep_to_qf({})
+end, { desc = "grep" })
 map("n", "<leader>G", function()
-  tb.live_grep({
-    default_text = vim.fn.expand("<cword>"),
-    additional_args = { "--hidden", "--glob", "!**/.git/*" },
-  })
+  live_grep_to_qf({ default_text = vim.fn.expand("<cword>") })
 end, { desc = "live grep for cword" })
 map("n", "<leader>b", tb.buffers, { desc = "buffers" })
 map("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "undo tree" })
@@ -167,6 +209,10 @@ map("n", "<leader>t", function()
   end
 end, { desc = "vertical terminal (reuse)" })
 map("t", "<Esc>", [[<C-\><C-n>]], { desc = "exit terminal mode" })
+
+-- Codex
+map("n", "<leader>CC", function() require("codex").toggle() end, { desc = "toggle codex" })
+map("v", "<leader>CS", function() require("codex").actions.send_selection() end, { desc = "Codex: Send selection" })
 
 -- Quit
 vim.api.nvim_create_user_command("Q", function()
