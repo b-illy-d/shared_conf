@@ -26,6 +26,8 @@ return {
     config = function()
       require('codex').setup({
         focus_after_send = true,
+        split = 'vertical',
+        size = 0.4,
       })
     end
   },
@@ -37,11 +39,11 @@ return {
     config = function()
       require('claude-code').setup({
         window = {
-          split_ratio = 0.3,       -- Percentage of screen for the terminal window (height for horizontal, width for vertical splits)
-          position = "horizontal", -- Position of the window: "botright", "topleft", "vertical", "float", etc.
-          enter_insert = true,     -- Whether to enter insert mode when opening Claude Code
-          hide_numbers = true,     -- Hide line numbers in the terminal window
-          hide_signcolumn = true,  -- Hide the sign column in the terminal window
+          split_ratio = 0.4,      -- Percentage of screen for the terminal window (height for horizontal, width for vertical splits)
+          position = "vertical",  -- Position of the window: "botright", "topleft", "vertical", "float", etc.
+          enter_insert = true,    -- Whether to enter insert mode when opening Claude Code
+          hide_numbers = true,    -- Hide line numbers in the terminal window
+          hide_signcolumn = true, -- Hide the sign column in the terminal window
         },
         -- File refresh settings
         refresh = {
@@ -52,7 +54,7 @@ return {
         },
         -- Git project settings
         git = {
-          use_git_root = true, -- Set CWD to git root when opening Claude Code (if in git project)
+          use_git_root = false, -- Dont set CWD to git root when opening Claude Code (if in git project)
         },
         -- Shell-specific settings
         shell = {
@@ -77,8 +79,8 @@ return {
             normal = "<C-,>",          -- Normal mode keymap for toggling Claude Code, false to disable
             terminal = "<C-,>",        -- Terminal mode keymap for toggling Claude Code, false to disable
             variants = {
-              continue = "<leader>cC", -- Normal mode keymap for Claude Code with continue flag
-              verbose = "<leader>cV",  -- Normal mode keymap for Claude Code with verbose flag
+              continue = "<leader>cc", -- Normal mode keymap for Claude Code with continue flag
+              verbose = "<leader>cv",  -- Normal mode keymap for Claude Code with verbose flag
             },
           },
           window_navigation = true, -- Enable window navigation keymaps (<C-h/j/k/l>)

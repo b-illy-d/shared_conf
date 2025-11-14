@@ -164,6 +164,19 @@ map("n", "gd", vim.lsp.buf.definition, { desc = "goto def" })
 map("n", "gi", vim.lsp.buf.implementation, { desc = "impl" })
 map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "rename" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "code action" })
+
+-- Diagnostics
+map("n", "<leader>dd", function()
+  vim.diagnostic.setqflist({ open = true, severity = vim.diagnostic.severity.ERROR })
+end)
+map("n", "<leader>dw", function()
+  vim.diagnostic.setqflist({ open = true, severity = { min = vim.diagnostic.severity.WARN } })
+end)
+map("n", "<leader>dm", function()
+  vim.cmd("silent make!")
+  vim.cmd("copen")
+end, { desc = "make and open quickfix" })
+
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "prev diag" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "next diag" })
 map("n", "<leader>yd", function()
@@ -172,13 +185,6 @@ map("n", "<leader>yd", function()
     vim.fn.setreg("+", diags[1].message)
   end
 end, { desc = "yank diagnostic message" })
-map("n", "<leader>yn", function()
-  local node = vim.treesitter.get_node()
-  if node then
-    local text = vim.treesitter.get_node_text(node, 0)
-    vim.fn.setreg("+", text)
-  end
-end, { desc = "yank treesitter node text" })
 
 
 local function toggle_relnum()
@@ -212,7 +218,7 @@ map("t", "<Esc>", [[<C-\><C-n>]], { desc = "exit terminal mode" })
 
 -- Codex
 map("n", "<leader>CC", function() require("codex").toggle() end, { desc = "toggle codex" })
-map("v", "<leader>CS", function() require("codex").actions.send_selection() end, { desc = "Codex: Send selection" })
+map("v", "<leader>CC", function() require("codex").actions.send_selection() end, { desc = "Codex: Send selection" })
 
 -- Quit
 vim.api.nvim_create_user_command("Q", function()
