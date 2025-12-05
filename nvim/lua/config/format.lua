@@ -3,6 +3,7 @@ require("conform").setup({
     python = { "ruff_fix", "ruff_organize_imports", "ruff_format" }, -- no black
     javascript = { "prettierd", "prettier" },
     typescript = { "prettierd", "prettier" },
+    xml = { "prettierd", "prettier" },
     json = { "jq" },
     go = { "gofumpt", "gofmt" },
     rust = { "rustfmt" },

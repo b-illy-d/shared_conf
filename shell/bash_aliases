@@ -33,9 +33,6 @@ alias vf="v \$(fzf)"
 
 EDITOR_CMD="$VIM_CMD"
 
-# Run sketch in standalone mode
-alias sketch="sketch --skaband-addr='' --base-image us-central1-docker.pkg.dev/shofifi/devops-docker/sketch:macos"
-
 # Quickly get to editing common config files
 alias bash_aliases='bash -c "$EDITOR_CMD ~/shared_conf/shell/bash_aliases; source ~/shared_conf/shell/bash_aliases"'
 alias bashalias="$EDITOR_CMD ~/shared_conf/shell/bash_aliases"

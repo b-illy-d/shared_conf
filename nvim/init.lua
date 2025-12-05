@@ -22,7 +22,7 @@ require("lazy").setup("plugins", {
 
 -- set theme first
 require("config.theme")
--- other configs might override
+-- global configs
 require("config.autocmds")
 require("config.format")
 require("config.keys")
@@ -30,3 +30,8 @@ require("config.opts")
 require("config.whitespace")
 require("config.gui")
 require("config.diagnostic")
+-- by language
+require("config.js")
+
+-- local specific
+vim.g.python3_host_prog = "/Users/billy/.local/share/uv/python/cpython-3.12.10-macos-aarch64-none/bin/python3.12"

@@ -155,7 +155,6 @@ nnoremap <Leader>b :bufdo
 
 " List contents of all registers (that typically contain pasteable text).
 nnoremap <silent> "" :registers "0123456789*+.:%#-/=_<CR>
-nnoremap <Leader>t :rightb vertical terminal<CR>
 
 " Vimspector
 nnoremap <Leader>dd :call vimspector#Launch()<CR>
