@@ -36,14 +36,12 @@ return {
         mapping = cmp.mapping.preset.insert({
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<CR>"]      = cmp.mapping.confirm({ select = true }),
-          ["<C-e>"]     = cmp.mapping.abort(),
+          ["<C-x>"]     = cmp.mapping.abort(),
           ["<Tab>"]     = cmp.mapping(function(fallback)
-            if require("copilot.suggestion").is_visible() then
-              require("copilot.suggestion").accept()
-            elseif cmp.visible() then
+            if cmp.visible() then
               cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
+            elseif luasnip.jumpable(1) then
+              luasnip.jump(1)
             else
               fallback()
             end

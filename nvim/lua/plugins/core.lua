@@ -4,17 +4,22 @@ return {
   ---------------------------------------------------------------------------
   { "tpope/vim-unimpaired" },
   { "tpope/vim-fugitive" },
-  { "tpope/vim-surround" },
   { "tpope/vim-repeat" },
   { "tpope/vim-speeddating" },
   { "svermeulen/vim-subversive" },
   { "junegunn/vim-easy-align" },
   { "mg979/vim-visual-multi",   branch = "master" },
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    config = true,
+  },
 
   ---------------------------------------------------------------------------
   -- Commenting, motions, textobjects
   ---------------------------------------------------------------------------
-  { "numToStr/Comment.nvim",    opts = {} },
+  { "numToStr/Comment.nvim", opts = {} },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async" },
@@ -52,7 +57,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function() require("bufferline").setup() end
   },
-  { "folke/which-key.nvim",          opts = {} },
+  { "folke/which-key.nvim",  opts = {} },
 
   ---------------------------------------------------------------------------
   -- File management / search
@@ -87,7 +92,7 @@ return {
   ---------------------------------------------------------------------------
   -- Git integration
   ---------------------------------------------------------------------------
-  { "lewis6991/gitsigns.nvim",        opts = {} },
+  { "lewis6991/gitsigns.nvim",       opts = {} },
 
   ---------------------------------------------------------------------------
   -- Syntax highlighting and parsing

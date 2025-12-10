@@ -14,9 +14,3 @@ require("conform").setup({
     lsp_format = "fallback",
   },
 })
-vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup("format_on_save", { clear = true }),
-  callback = function(args)
-    require("conform").format({ bufnr = args.buf })
-  end,
-})

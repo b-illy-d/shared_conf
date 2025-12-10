@@ -11,7 +11,7 @@ return {
           accept = "<Tab>",
           next = "<A-]>",
           prev = "<A-[>",
-          dismiss = "C-]",
+          dismiss = "<C-X>",
         },
       },
     }
