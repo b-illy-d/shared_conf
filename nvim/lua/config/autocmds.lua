@@ -16,10 +16,10 @@ ac("BufWritePre", {
 vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
   group = grp,
   callback = function(args)
+    if not vim.api.nvim_buf_is_valid(args.buf) then return end
+    if not vim.api.nvim_buf_is_loaded(args.buf) then return end
     vim.defer_fn(function()
       local b = vim.bo[args.buf]
-      if not vim.api.nvim_buf_is_valid(args.buf) then return end
-      if not vim.api.nvim_buf_is_loaded(b) then return end
       if b.buftype ~= "" then return end
       if b.readonly or not b.modifiable then return end
       if vim.api.nvim_buf_get_name(args.buf) == "" then return end
