@@ -144,6 +144,65 @@ gcm() {
   git checkout "$main_branch"
 }
 
+# Git worktree functions
+gw() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: gw <branch-name>"
+    echo "Example: gw hotfix"
+    return 1
+  fi
+
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "not a git repo"; return 1; }
+
+  local branch_name="bd/$1"
+  local repo_root=$(git rev-parse --show-toplevel)
+  local repo_name=$(basename "$repo_root")
+  local worktree_path="${repo_root}/../${repo_name}-$1"
+
+  echo "Creating worktree at: $worktree_path"
+  echo "Branch: $branch_name"
+
+  git worktree add -b "$branch_name" "$worktree_path" origin/master
+}
+
+gwd() {
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "not a git repo"; return 1; }
+
+  if [[ -n "$1" ]]; then
+    # Delete the specified worktree
+    local repo_root=$(git rev-parse --show-toplevel)
+    local repo_name=$(basename "$repo_root")
+    local worktree_path="${repo_root}/../${repo_name}-$1"
+
+    if git worktree list | grep -q "$worktree_path"; then
+      git worktree remove "$worktree_path"
+    else
+      # Try the argument as-is in case it's a full path
+      git worktree remove "$1"
+    fi
+  else
+    # Interactive selection
+    local worktrees=$(git worktree list --porcelain | grep "worktree " | sed 's/worktree //' | tail -n +2)
+
+    if [[ -z "$worktrees" ]]; then
+      echo "No additional worktrees to delete"
+      return 0
+    fi
+
+    echo "Select a worktree to delete:"
+    select worktree in $worktrees; do
+      if [[ -n "$worktree" ]]; then
+        git worktree remove "$worktree"
+        break
+      fi
+    done
+  fi
+}
+
+gwl() {
+  git worktree list
+}
+
 # Git
 alias g="git"
 alias ga="git add ."

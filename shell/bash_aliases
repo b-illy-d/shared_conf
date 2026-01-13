@@ -13,10 +13,14 @@ function finode {
 }
 
 function jq2csv {
-  jq -rf $HOME/shared_scripts/json2csv.jq $@
+  jq -rf $HOME/shared_scripts/json2csv.jq "$@"
 }
 
-VIM_CMD="nvim"
+function csv2json () {
+  python3 "$HOME/shared_scripts/csv2json.py" "$@"
+}
+
+export VIM_CMD="nvim"
 # vim but go to the line number if pasting from a stack trace
 function v {
   local arg="$1"
