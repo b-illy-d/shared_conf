@@ -19,7 +19,28 @@ return {
   ---------------------------------------------------------------------------
   -- Commenting, motions, textobjects
   ---------------------------------------------------------------------------
-  { "numToStr/Comment.nvim", opts = {} },
+  {
+    "numToStr/Comment.nvim",
+    opts = {
+      toggler = {
+        line = 'gcc',
+        block = 'gbc',
+      },
+      opleader = {
+        ---Line-comment keymap
+        line = 'gc',
+        ---Block-comment keymap
+        block = 'gb',
+      },
+      mappings = {
+        ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+        basic = true,
+      }
+    },
+    config = function()
+      require("Comment").setup()
+    end
+  },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async" },
@@ -57,7 +78,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function() require("bufferline").setup() end
   },
-  { "folke/which-key.nvim",  opts = {} },
+  { "folke/which-key.nvim",          opts = {} },
 
   ---------------------------------------------------------------------------
   -- File management / search
@@ -92,7 +113,22 @@ return {
   ---------------------------------------------------------------------------
   -- Git integration
   ---------------------------------------------------------------------------
-  { "lewis6991/gitsigns.nvim",       opts = {} },
+  { "lewis6991/gitsigns.nvim",        opts = {} },
+  {
+    "samoshkin/vim-mergetool",
+    lazy = false,
+    init = function()
+      vim.g.mergetool_layout = "mr"
+      vim.g.mergetool_prefer_revision = "local"
+    end,
+    keys = {
+      { "<leader>mt", "<Plug>(MergetoolToggle)", desc = "Toggle mergetool" },
+      { "<C-Left>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeLeft)" or "<C-Left>" end, expr = true },
+      { "<C-Right>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeRight)" or "<C-Right>" end, expr = true },
+      { "<C-Down>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeDown)" or "<C-Down>" end, expr = true },
+      { "<C-Up>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeUp)" or "<C-Up>" end, expr = true },
+    },
+  },
 
   ---------------------------------------------------------------------------
   -- Syntax highlighting and parsing

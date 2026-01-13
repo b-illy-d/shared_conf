@@ -163,7 +163,7 @@ map("n", "gr", vim.lsp.buf.references, { desc = 'goto references' })
 map("n", "gd", vim.lsp.buf.definition, { desc = "goto def" })
 map("n", "gi", vim.lsp.buf.implementation, { desc = "impl" })
 map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "rename" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "code action" })
+-- map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "code action" })
 
 -- Diagnostics
 map("n", "<leader>dd", function()
@@ -185,7 +185,7 @@ map("n", "<leader>yd", function()
     vim.fn.setreg("+", diags[1].message)
   end
 end, { desc = "yank diagnostic message" })
-
+map("n", "<leader>y%", ":let @+ = expand('%')<cr>", { desc = "yank buffer filename to +" })
 
 local function toggle_relnum()
   vim.wo.relativenumber = not vim.wo.relativenumber
@@ -201,11 +201,6 @@ vim.keymap.set("n", "<S-Tab>", function()
   return vim.wo.diff and "[c" or "<S-Tab>"
 end, { expr = true })
 
--- Comment.nvim equivalents for your Commentary mappings
-map("n", "<leader>c", function() require("Comment.api").toggle.linewise.current() end, { desc = "comment line" })
-map("v", "<leader>c", function() require("Comment.api").toggle.linewise(vim.fn.visualmode()) end,
-  { desc = "comment selection" })
-
 -- Terminal
 map("n", "<leader>t", function()
   if vim.fn.bufexists("term://*") == 1 then
@@ -215,10 +210,6 @@ map("n", "<leader>t", function()
   end
 end, { desc = "vertical terminal (reuse)" })
 map("t", "<Esc>", [[<C-\><C-n>]], { desc = "exit terminal mode" })
-
--- Codex
-map("n", "<leader>CC", function() require("codex").toggle() end, { desc = "toggle codex" })
-map("v", "<leader>CC", function() require("codex").actions.send_selection() end, { desc = "Codex: Send selection" })
 
 -- Quit
 vim.api.nvim_create_user_command("Q", function()
