@@ -41,10 +41,11 @@ GCSDK="/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
 [[ -r "$GCSDK/completion.zsh.inc" ]] && source "$GCSDK/completion.zsh.inc"
 
 # Arrow keys: search history by current prefix
-if [[ -n ${terminfo[kcuu1]} ]]; then
-  bindkey "${terminfo[kcuu1]}" history-beginning-search-backward
-  bindkey "${terminfo[kcud1]}" history-beginning-search-forward
-fi
-bindkey '^P' history-beginning-search-backward
-bindkey '^N' history-beginning-search-forward
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+
 

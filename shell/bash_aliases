@@ -94,6 +94,7 @@ alias la='eza --group-directories-first --all --icons'
 alias lsd='eza --group-directories-first --icons --only-dirs'
 alias ll='eza --group-directories-first --long --all --icons'
 
+alias clc="claude --allow-dangerously-skip-permissions $@"
 
 # random
 
