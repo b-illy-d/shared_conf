@@ -206,7 +206,7 @@ map("n", "<leader>t", function()
   if vim.fn.bufexists("term://*") == 1 then
     vim.cmd("buffer term://*")
   else
-    vim.cmd("vsplit | terminal zsh -f")
+    vim.cmd("vsplit | terminal zsh -l")
   end
 end, { desc = "vertical terminal (reuse)" })
 map("t", "<Esc>", [[<C-\><C-n>]], { desc = "exit terminal mode" })
