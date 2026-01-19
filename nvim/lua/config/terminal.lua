@@ -1,0 +1,5 @@
+vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { desc = 'Move to left window from terminal' })
+vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { desc = 'Move to bottom window from terminal' })
+vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { desc = 'Move to top window from terminal' })
+vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { desc = 'Move to right window from terminal' })
+vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { desc = 'Move to next window from terminal' })

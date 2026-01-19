@@ -30,6 +30,7 @@ require("config.opts")
 require("config.whitespace")
 require("config.gui")
 require("config.diagnostic")
+require("config.terminal")
 -- by language
 require("config.js")
 

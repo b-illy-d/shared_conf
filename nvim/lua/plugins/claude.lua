@@ -6,8 +6,8 @@ return {
       -- Server Configuration
       port_range = { min = 10000, max = 65535 },
       auto_start = true,
-      log_level = "info",   -- "trace", "debug", "info", "warn", "error"
-      terminal_cmd = "clc", -- Custom terminal command (default: "claude")
+      log_level = "warn", -- "trace", "debug", "info", "warn", "error"
+      terminal_cmd = "claude",
 
       -- Send/Focus Behavior
       -- When true, successful sends will focus the Claude terminal if already connected
@@ -20,8 +20,8 @@ return {
       -- Terminal Configuration
       terminal = {
         split_side = "right", -- "left" or "right"
-        split_width_percentage = 0.30,
-        provider = "auto",    -- "auto", "snacks", "native", "external", "none", or custom provider table
+        split_width_percentage = 0.40,
+        provider = "auto",
         auto_close = true,
       },
 
