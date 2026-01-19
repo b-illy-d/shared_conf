@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git worktree:*)",
+      "Bash(while IFS= read -r line)",
+      "Bash(do echo \"$line\")",
+      "Bash(do echo \"Line: [$line]\")",
+      "Bash(done)",
+      "Bash(git rev-parse:*)",
+      "Skill(cc10x-router)",
+      "Bash(nvim:*)"
+    ]
+  }
+}
