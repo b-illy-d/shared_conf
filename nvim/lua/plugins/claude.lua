@@ -19,10 +19,11 @@ return {
 
       -- Terminal Configuration
       terminal = {
-        split_side = "right", -- "left" or "right"
-        split_width_percentage = 0.40,
-        provider = "auto",
-        auto_close = true,
+        provider = "snacks",
+        snacks_win_opts = {
+          position = "bottom",
+          height = 0.5,
+        },
       },
 
       -- Diff Integration
