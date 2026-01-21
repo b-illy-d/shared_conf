@@ -25,116 +25,275 @@ Clean code and good architecture is easier for both humans and agents to underst
 - [ ] Performance considerations addressed
 - [ ] API design is "deep", minimal API surface with maximal functionality
 
-## Review Process
+---
 
-**Is the code clean?** We're trying to make Uncle Bob fucking cry tears of joy when he sees this shit.
+## Extended Review Rubric
 
-Review in priority order:
+Examine each of the principles below and document violations, categorizing them according to severity.
 
-1. **Security** - Vulnerabilities that could be exploited
-2. **Correctness** - Logic errors, edge cases missed
-3. **Performance** - Unnecessary slowness
-4. **Architecture** - Complicated patterns that are difficult to understand
-5. **API Design** - Over-engineered or verbose API surfaces that introduce tech debt
-6. **Maintainability** - Hard to understand or modify
-7. **UX** - User experience issues (if UI involved)
-8. **Accessibility** - A11y issues (if UI involved)
+## Depth over Decomposition
+- **Problem**: System split into many small modules that expose logic to callers.
+- **Why it’s bad**: Complexity is distributed; callers pay cognitive cost; changes ripple.
+- **Smells**:
+  - Many tiny classes/functions with minimal behavior.
+  - Callers contain orchestration, conditionals, or policy.
+  - Excessive “glue code.”
+- **Fixes**:
+  - Merge shallow modules.
+  - Pull logic and policy downward.
+  - Prefer fewer, deeper abstractions.
 
-## Security Review Checklist
+## Interfaces Simple Relative to Power
+- **Problem**: Interfaces force callers to manage many details.
+- **Why it’s bad**: High recall cost; increased coupling.
+- **Smells**:
+  - Many parameters or flags.
+  - Config objects with many rarely-used fields.
+  - Repeated argument combinations.
+- **Fixes**:
+  - Replace flags with semantic operations.
+  - Strong defaults.
+  - Collapse parameters into intent-level APIs.
 
-| Check | Looking For | Example Vulnerability |
-|-------|-------------|----------------------|
-| Input validation | Unvalidated user input | SQL injection, XSS |
-| Authentication | Missing auth checks | Unauthorized access |
-| Authorization | Missing permission checks | Privilege escalation |
-| Secrets | Hardcoded credentials | API key exposure |
-| SQL queries | String concatenation | SQL injection |
-| Output encoding | Unescaped output | XSS attacks |
-| CSRF | Missing tokens | Cross-site request forgery |
-| File handling | Path traversal | Reading arbitrary files |
+## Caller Shouldn’t Know Implementation Details
+- **Problem**: Interfaces leak internal representation or mechanisms.
+- **Why it’s bad**: Tight coupling; high change amplification.
+- **Smells**:
+  - Getters/setters everywhere.
+  - Params like `useRedis`, `bufferSize`, `offset`.
+  - Callers mutating internal data structures.
+- **Fixes**:
+  - Hide data structures.
+  - Expose operations, not state.
+  - Rename APIs in terms of *what*, not *how*.
 
-**For each security issue found:**
-```markdown
-- [CRITICAL] SQL injection at `src/api/users.ts:45`
-  - Problem: User input concatenated into query
-  - Fix: Use parameterized query
-  - Code: `db.query(\`SELECT * FROM users WHERE id = ?\`, [userId])`
-```
+## Centralize Complexity
+- **Problem**: Same logic reimplemented locally in multiple places.
+- **Why it’s bad**: Inconsistency; subtle bugs; impossible global fixes.
+- **Smells**:
+  - Multiple `toCamelCase`, `debounce`, `retry`, formatting helpers.
+  - Slightly different copies of the same logic.
+- **Fixes**:
+  - Choose a canonical implementation.
+  - Centralize behind a single abstraction.
+  - Test it; block new copies.
 
-## Quality Review Checklist
+## Optimize for Cognitive Load, Not Line Count
+- **Problem**: Code optimized for brevity or cleverness.
+- **Why it’s bad**: Harder reasoning; higher bug risk.
+- **Smells**:
+  - Dense one-liners.
+  - Clever functional chains.
+  - Non-obvious control flow.
+- **Fixes**:
+  - Prefer obvious over clever.
+  - Name intermediate steps.
+  - Make invariants explicit.
 
-| Check | Good | Bad |
-|-------|------|-----|
-| **Naming** | `calculateTotalPrice()` | `calc()`, `doStuff()` |
-| **Functions** | Does one thing | Multiple responsibilities |
-| **Complexity** | Linear flow | Nested conditions |
-| **Duplication** | DRY where sensible | Copy-paste code |
-| **Error handling** | Graceful failures | Silent failures |
-| **Testability** | Injectable dependencies | Global state |
+## Context Switching Is Real Cost
+- **Problem**: Utilities exist but are hard to recall or discover.
+- **Why it’s bad**: Developers reimplement locally.
+- **Smells**:
+  - “Quick helper” comments.
+  - Local reimplementations of shared utilities.
+- **Fixes**:
+  - Design for autocomplete (`str.camel`, `arr.chunk`).
+  - Short, distinctive names.
+  - One obvious import path.
 
-## Performance Review Checklist
+## Deep Utilities, Not Mini-Frameworks
+- **Problem**: Internal libs become generic, option-heavy.
+- **Why it’s bad**: Shallow abstractions; callers manage policy.
+- **Smells**:
+  - Utility functions with many flags.
+  - Same utility used with different option sets everywhere.
+- **Fixes**:
+  - Encode policy inside the function.
+  - Provide multiple semantic helpers instead of flags.
+  - Aggressively limit options.
 
-| Pattern | Problem | Fix |
-|---------|---------|-----|
-| N+1 queries | Loop with DB call | Batch query |
-| Unnecessary loops | Iterating full list | Early return |
-| Missing cache | Repeated expensive ops | Add caching |
-| Memory leaks | Objects never cleaned | Cleanup on dispose |
-| Sync blocking | Blocking main thread | Async operation |
+## Slight Generality, Not Over-Abstraction
+- **Problem**: Code is hyper-specific or prematurely generic.
+- **Why it’s bad**: Duplication or needless complexity.
+- **Smells**:
+  - Parameterized functions used once.
+  - “For future use” abstractions.
+- **Fixes**:
+  - Design for current use + one plausible variation.
+  - Abstract only after duplication appears.
+  - Pull complexity downward when abstracting.
 
-## Architecture Review Checklist
+## Policy Belongs Inside the Module
+- **Problem**: Callers decide formatting, retry, debounce semantics.
+- **Why it’s bad**: Inconsistent behavior across the system.
+- **Smells**:
+  - Repeated conditionals around the same operation.
+  - Same utility used with different flags everywhere.
+- **Fixes**:
+  - Define canonical policies (`formatCurrency`, `debounceSearchInput`).
+  - Expose policy-level APIs.
 
-| Pattern | Problem | Fix |
-|---------|---------|-----|
-| Complicated logical flow | Deeply nested if/then or try/catch statements | Extract helper functions |
-| High cognitive load | Long functions, very many properties on fn argument objects | Refactor for simplicity |
-| Implicit coupling       | Hidden dependencies via globals, env, or shared state           | Make dependencies explicit, pass them in |
-| Error swallowing        | Catch blocks that log and continue blindly                      | Propagate or handle explicitly           |
-| Configuration sprawl    | Behavior controlled by many flags/env vars                      | Consolidate config, define profiles      |
+## Amortized Complexity Beats Local Convenience
+- **Problem**: Local implementation chosen because it’s faster now.
+- **Why it’s bad**: System-wide cost grows over time.
+- **Smells**:
+  - “Easier to write it here.”
+  - Near-duplicate helpers.
+- **Fixes**:
+  - Allow local-first, promote-on-duplication workflow.
+  - Centralize at 2–3 uses.
+  - Enforce “no new copies.”
 
-## API Design Review Checklist
+## Tests Are the Price of Centralization
+- **Problem**: Shared utilities without clear guarantees.
+- **Why it’s bad**: Centralized bugs with large blast radius.
+- **Smells**:
+  - Untested shared helpers.
+  - Fear of modifying shared code.
+- **Fixes**:
+  - Table-driven tests for edge cases.
+  - Explicit semantic guarantees.
+  - Fewer, better-tested utilities.
 
-| Pattern                       | Problem                                            | Fix                                                        |
-| ----------------------------- | -------------------------------------------------- | ---------------------------------------------------------- |
-| Surface sprawl                | Too many entry points, flags, and overloads        | Collapse to a few powerful primitives with strong defaults |
-| Weak core abstraction         | Interface reflects internals, not user intent      | Redesign around the true domain operations                 |
-| Leaky invariants              | Callers must remember rules and call order         | Encode invariants in types and API shape                   |
-| Configuration as control flow | Options create combinatorial behavior              | Replace with explicit modes or separate APIs               |
-| Poor composability            | Operations don’t combine cleanly                   | Provide composable primitives and pipelines                |
-| Hidden side effects & costs   | Mutations, I/O, or performance cliffs are implicit | Make effects and complexity explicit                       |
+## Judge Design by Change Cost
+- **Problem**: Design judged by structure or style instead of change impact.
+- **Why it’s bad**: Misses real complexity.
+- **Smells**:
+  - Small changes touch many files.
+  - Defensive edits.
+- **Fixes**:
+  - Ask “where does complexity live?”
+  - Refactor so future changes touch one module.
 
-## Maintainability Review Checklist
+## Naming Should Encode Intent
+- **Problem**: Names are vague, generic, or misleading.
+- **Why it’s bad**: Increases cognitive load; obscures abstraction.
+- **Smells**:
+  - Names like `calc`, `doStuff`, `handle`.
+  - Overuse of `Manager`, `Helper`, `Util`.
+- **Fixes**:
+  - Use precise, domain-relevant names.
+  - Prefer verbs for actions, nouns for concepts.
+  - Rename when abstraction changes.
 
-| Pattern               | Problem                                         | Fix                                       |
-| --------------------- | ----------------------------------------------- | ----------------------------------------- |
-| Blurred boundaries    | Modules change for multiple unrelated reasons   | Enforce single-responsibility boundaries  |
-| Implicit dependencies | Hidden globals, order dependence, magic wiring  | Make dependencies explicit                |
-| Non-local reasoning   | Understanding requires whole-repo context       | Refactor for locality and clear ownership |
-| Unenforced invariants | Correctness relies on comments or discipline    | Encode invariants in types and structure  |
-| Code accretion        | Nothing gets deleted; everything is “important” | Make deletion cheap and routine           |
-| Change blast radius   | Small changes break unrelated shit              | Isolate changes behind stable interfaces  |
+## Functions Should Do One Coherent Thing
+- **Problem**: Functions have multiple responsibilities.
+- **Why it’s bad**: Hard to reason about; hard to reuse or test.
+- **Smells**:
+  - Long functions.
+  - Multiple unrelated conditionals.
+- **Fixes**:
+  - Split by responsibility *inside* the module.
+  - Extract helpers that hide detail, not expose it.
 
-## UX Review Checklist (UI Code)
+## Control Flow Should Be Obvious
+- **Problem**: Logic is deeply nested or tangled.
+- **Why it’s bad**: High cognitive load; error-prone.
+- **Smells**:
+  - Deeply nested `if/else` or `try/catch`.
+  - Multiple exit paths with unclear invariants.
+- **Fixes**:
+  - Early returns.
+  - Extract helper functions.
+  - Flatten control flow.
 
-| Check | Verify |
-|-------|--------|
-| Loading states | Shows loading indicator |
-| Error states | Shows helpful error message |
-| Empty states | Shows appropriate empty message |
-| Success feedback | Confirms action completed |
-| Form validation | Shows inline errors |
-| Responsive | Works on mobile/tablet |
+## Explicit Error Handling
+- **Problem**: Errors are swallowed or ignored.
+- **Why it’s bad**: Silent failures; undefined states.
+- **Smells**:
+  - Empty `catch` blocks.
+  - Logging and continuing blindly.
+- **Fixes**:
+  - Propagate errors or handle explicitly.
+  - Define clear failure semantics.
+  - Prefer failing fast to hiding errors.
 
-## Accessibility Review Checklist (UI Code)
+## Avoid Implicit Coupling
+- **Problem**: Code relies on hidden globals, env, or order dependence.
+- **Why it’s bad**: Non-local reasoning; fragile behavior.
+- **Smells**:
+  - Hidden globals or shared mutable state.
+  - Functions that “just assume” setup.
+- **Fixes**:
+  - Make dependencies explicit.
+  - Pass dependencies in.
+  - Reduce shared state.
 
-| Check | Verify |
-|-------|--------|
-| Semantic HTML | Uses correct elements (button, not div) |
-| Alt text | Images have meaningful alt text |
-| Keyboard | All interactions keyboard accessible |
-| Focus | Focus visible and logical order |
-| Color contrast | Meets WCAG AA (4.5:1 text) |
-| Screen reader | Labels and ARIA where needed |
+## Performance: Eliminate Structural Inefficiencies
+- **Problem**: Inefficient patterns baked into design.
+- **Why it’s bad**: Performance fixes become invasive or impossible.
+- **Smells**:
+  - N+1 queries.
+  - Repeated expensive operations.
+  - Sync blocking on hot paths.
+- **Fixes**:
+  - Batch operations.
+  - Cache where appropriate.
+  - Use async/non-blocking patterns.
+
+## Resource Lifetime Must Be Explicit
+- **Problem**: Resources are allocated but not released.
+- **Why it’s bad**: Memory leaks; degraded performance.
+- **Smells**:
+  - Objects never cleaned up.
+  - Long-lived references.
+- **Fixes**:
+  - Explicit cleanup/dispose.
+  - Tie lifetime to clear ownership.
+
+## Configuration Should Not Be Control Flow
+- **Problem**: Behavior controlled by many flags or env vars.
+- **Why it’s bad**: Combinatorial complexity; hard reasoning.
+- **Smells**:
+  - Many boolean flags.
+  - Env vars altering core logic.
+- **Fixes**:
+  - Consolidate configuration.
+  - Define explicit modes or profiles.
+  - Replace flags with separate APIs.
+
+## Maintain Clear Module Boundaries
+- **Problem**: Modules change for unrelated reasons.
+- **Why it’s bad**: High churn; unclear ownership.
+- **Smells**:
+  - Frequent unrelated edits to same files.
+  - “God modules.”
+- **Fixes**:
+  - Enforce single-responsibility boundaries.
+  - Split by reason-to-change.
+
+## Enforce Invariants in Code, Not Comments
+- **Problem**: Correctness relies on discipline or documentation.
+- **Why it’s bad**: Invariants drift; bugs creep in.
+- **Smells**:
+  - Comments explaining required call order.
+  - “Must be called before…” notes.
+- **Fixes**:
+  - Encode invariants in types and structure.
+  - Make invalid states unrepresentable.
+
+## UI: Make States Explicit
+- **Problem**: UI doesn’t represent all system states.
+- **Why it’s bad**: Confusing UX; hidden failures.
+- **Smells**:
+  - No loading, empty, or error states.
+- **Fixes**:
+  - Explicit loading, error, empty, and success states.
+  - Inline validation and feedback.
+
+## Accessibility Is Part of Design
+- **Problem**: UI only works for ideal users.
+- **Why it’s bad**: Excludes users; legal and ethical risk.
+- **Smells**:
+  - Non-semantic HTML.
+  - Mouse-only interactions.
+  - Poor contrast.
+- **Fixes**:
+  - Semantic elements.
+  - Keyboard accessibility.
+  - Visible focus, sufficient contrast.
+  - Screen-reader-friendly labels.
+
 
 ## Severity Classification
 
