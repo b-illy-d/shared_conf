@@ -31,7 +31,7 @@ Clean code and good architecture is easier for both humans and agents to underst
 
 Examine each of the principles below and document violations, categorizing them according to severity.
 
-## Depth over Decomposition
+### Depth over Decomposition
 - **Problem**: System split into many small modules that expose logic to callers.
 - **Why it’s bad**: Complexity is distributed; callers pay cognitive cost; changes ripple.
 - **Smells**:
@@ -43,7 +43,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Pull logic and policy downward.
   - Prefer fewer, deeper abstractions.
 
-## Interfaces Simple Relative to Power
+### Interfaces Simple Relative to Power
 - **Problem**: Interfaces force callers to manage many details.
 - **Why it’s bad**: High recall cost; increased coupling.
 - **Smells**:
@@ -55,7 +55,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Strong defaults.
   - Collapse parameters into intent-level APIs.
 
-## Caller Shouldn’t Know Implementation Details
+### Caller Shouldn’t Know Implementation Details
 - **Problem**: Interfaces leak internal representation or mechanisms.
 - **Why it’s bad**: Tight coupling; high change amplification.
 - **Smells**:
@@ -67,7 +67,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Expose operations, not state.
   - Rename APIs in terms of *what*, not *how*.
 
-## Centralize Complexity
+### Centralize Complexity
 - **Problem**: Same logic reimplemented locally in multiple places.
 - **Why it’s bad**: Inconsistency; subtle bugs; impossible global fixes.
 - **Smells**:
@@ -78,7 +78,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Centralize behind a single abstraction.
   - Test it; block new copies.
 
-## Optimize for Cognitive Load, Not Line Count
+### Optimize for Cognitive Load, Not Line Count
 - **Problem**: Code optimized for brevity or cleverness.
 - **Why it’s bad**: Harder reasoning; higher bug risk.
 - **Smells**:
@@ -90,29 +90,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Name intermediate steps.
   - Make invariants explicit.
 
-## Context Switching Is Real Cost
-- **Problem**: Utilities exist but are hard to recall or discover.
-- **Why it’s bad**: Developers reimplement locally.
-- **Smells**:
-  - “Quick helper” comments.
-  - Local reimplementations of shared utilities.
-- **Fixes**:
-  - Design for autocomplete (`str.camel`, `arr.chunk`).
-  - Short, distinctive names.
-  - One obvious import path.
-
-## Deep Utilities, Not Mini-Frameworks
-- **Problem**: Internal libs become generic, option-heavy.
-- **Why it’s bad**: Shallow abstractions; callers manage policy.
-- **Smells**:
-  - Utility functions with many flags.
-  - Same utility used with different option sets everywhere.
-- **Fixes**:
-  - Encode policy inside the function.
-  - Provide multiple semantic helpers instead of flags.
-  - Aggressively limit options.
-
-## Slight Generality, Not Over-Abstraction
+### Slight Generality, Not Over-Abstraction
 - **Problem**: Code is hyper-specific or prematurely generic.
 - **Why it’s bad**: Duplication or needless complexity.
 - **Smells**:
@@ -123,7 +101,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Abstract only after duplication appears.
   - Pull complexity downward when abstracting.
 
-## Policy Belongs Inside the Module
+### Policy Belongs Inside the Module
 - **Problem**: Callers decide formatting, retry, debounce semantics.
 - **Why it’s bad**: Inconsistent behavior across the system.
 - **Smells**:
@@ -133,18 +111,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Define canonical policies (`formatCurrency`, `debounceSearchInput`).
   - Expose policy-level APIs.
 
-## Amortized Complexity Beats Local Convenience
-- **Problem**: Local implementation chosen because it’s faster now.
-- **Why it’s bad**: System-wide cost grows over time.
-- **Smells**:
-  - “Easier to write it here.”
-  - Near-duplicate helpers.
-- **Fixes**:
-  - Allow local-first, promote-on-duplication workflow.
-  - Centralize at 2–3 uses.
-  - Enforce “no new copies.”
-
-## Tests Are the Price of Centralization
+### Tests Are the Price of Centralization
 - **Problem**: Shared utilities without clear guarantees.
 - **Why it’s bad**: Centralized bugs with large blast radius.
 - **Smells**:
@@ -155,7 +122,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Explicit semantic guarantees.
   - Fewer, better-tested utilities.
 
-## Judge Design by Change Cost
+### Judge Design by Change Cost
 - **Problem**: Design judged by structure or style instead of change impact.
 - **Why it’s bad**: Misses real complexity.
 - **Smells**:
@@ -165,7 +132,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Ask “where does complexity live?”
   - Refactor so future changes touch one module.
 
-## Naming Should Encode Intent
+### Naming Should Encode Intent
 - **Problem**: Names are vague, generic, or misleading.
 - **Why it’s bad**: Increases cognitive load; obscures abstraction.
 - **Smells**:
@@ -176,7 +143,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Prefer verbs for actions, nouns for concepts.
   - Rename when abstraction changes.
 
-## Functions Should Do One Coherent Thing
+### Functions Should Do One Coherent Thing
 - **Problem**: Functions have multiple responsibilities.
 - **Why it’s bad**: Hard to reason about; hard to reuse or test.
 - **Smells**:
@@ -185,8 +152,9 @@ Examine each of the principles below and document violations, categorizing them 
 - **Fixes**:
   - Split by responsibility *inside* the module.
   - Extract helpers that hide detail, not expose it.
+- **BUT**: remember optimize for cognitive load, not line count
 
-## Control Flow Should Be Obvious
+### Control Flow Should Be Obvious
 - **Problem**: Logic is deeply nested or tangled.
 - **Why it’s bad**: High cognitive load; error-prone.
 - **Smells**:
@@ -197,7 +165,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Extract helper functions.
   - Flatten control flow.
 
-## Explicit Error Handling
+### Explicit Error Handling
 - **Problem**: Errors are swallowed or ignored.
 - **Why it’s bad**: Silent failures; undefined states.
 - **Smells**:
@@ -208,7 +176,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Define clear failure semantics.
   - Prefer failing fast to hiding errors.
 
-## Avoid Implicit Coupling
+### Avoid Implicit Coupling
 - **Problem**: Code relies on hidden globals, env, or order dependence.
 - **Why it’s bad**: Non-local reasoning; fragile behavior.
 - **Smells**:
@@ -219,7 +187,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Pass dependencies in.
   - Reduce shared state.
 
-## Performance: Eliminate Structural Inefficiencies
+### Performance: Eliminate Structural Inefficiencies
 - **Problem**: Inefficient patterns baked into design.
 - **Why it’s bad**: Performance fixes become invasive or impossible.
 - **Smells**:
@@ -231,7 +199,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Cache where appropriate.
   - Use async/non-blocking patterns.
 
-## Resource Lifetime Must Be Explicit
+### Resource Lifetime Must Be Explicit
 - **Problem**: Resources are allocated but not released.
 - **Why it’s bad**: Memory leaks; degraded performance.
 - **Smells**:
@@ -241,7 +209,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Explicit cleanup/dispose.
   - Tie lifetime to clear ownership.
 
-## Configuration Should Not Be Control Flow
+### Configuration Should Not Be Control Flow
 - **Problem**: Behavior controlled by many flags or env vars.
 - **Why it’s bad**: Combinatorial complexity; hard reasoning.
 - **Smells**:
@@ -252,7 +220,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Define explicit modes or profiles.
   - Replace flags with separate APIs.
 
-## Maintain Clear Module Boundaries
+### Maintain Clear Module Boundaries
 - **Problem**: Modules change for unrelated reasons.
 - **Why it’s bad**: High churn; unclear ownership.
 - **Smells**:
@@ -262,7 +230,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Enforce single-responsibility boundaries.
   - Split by reason-to-change.
 
-## Enforce Invariants in Code, Not Comments
+### Enforce Invariants in Code, Not Comments
 - **Problem**: Correctness relies on discipline or documentation.
 - **Why it’s bad**: Invariants drift; bugs creep in.
 - **Smells**:
@@ -272,7 +240,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Encode invariants in types and structure.
   - Make invalid states unrepresentable.
 
-## UI: Make States Explicit
+### UI: Make States Explicit
 - **Problem**: UI doesn’t represent all system states.
 - **Why it’s bad**: Confusing UX; hidden failures.
 - **Smells**:
@@ -281,7 +249,7 @@ Examine each of the principles below and document violations, categorizing them 
   - Explicit loading, error, empty, and success states.
   - Inline validation and feedback.
 
-## Accessibility Is Part of Design
+### Accessibility Is Part of Design
 - **Problem**: UI only works for ideal users.
 - **Why it’s bad**: Excludes users; legal and ethical risk.
 - **Smells**:
@@ -294,6 +262,17 @@ Examine each of the principles below and document violations, categorizing them 
   - Visible focus, sufficient contrast.
   - Screen-reader-friendly labels.
 
+## Spiritual/Moral Coherence of Code
+- **Problem**: Some solutions violate spiritual principles of the Dao
+- **Why it's bad**: Dehumanizing, possible eternal consquences
+- **Smells**:
+  - Convenience at all costs
+  - Features that serve Landlords and not Workers
+  - Canned food is ultimately very damaging to the soul
+- **Fixes**:
+  - Exorcism
+  - Two-weeks' notice
+  - Doing it better
 
 ## Severity Classification
 
