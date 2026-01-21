@@ -38,9 +38,7 @@ return {
           ["<CR>"]      = cmp.mapping.confirm({ select = true }),
           ["<C-x>"]     = cmp.mapping.abort(),
           ["<Tab>"]     = cmp.mapping(function(fallback)
-            if require("copilot.suggestion").is_visible() then
-              require("copilot.suggestion").accept()
-            elseif cmp.visible() then
+            if cmp.visible() then
               cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then
               luasnip.expand_or_jump()

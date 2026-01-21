@@ -18,11 +18,21 @@ local function apply_mode()
   end
 end
 
+local function clear_match()
+  if vim.w.badws_id then
+    pcall(vim.fn.matchdelete, vim.w.badws_id)
+    vim.w.badws_id = nil
+  end
+end
+
 -- keep the match present per-window
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
   group = grp,
   callback = function()
-    if vim.bo.buftype ~= "" then return end
+    if vim.bo.buftype ~= "" then
+      clear_match()
+      return
+    end
     ensure_match()
     apply_mode()
   end,
