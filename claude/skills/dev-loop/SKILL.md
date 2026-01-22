@@ -9,88 +9,77 @@ prompt: You are iterating carefully on tasks in the ROADMAP.md in this repositor
 This is the systematic process for implementing phases from a dev roadmap.
 Follow this loop exactly for each phase to ensure careful, methodical progress.
 
+## Prequisites
+
+- There must be a `docs/` dir with
+  - CRITICAL: ROADMAP.md doc
+    - A document organized into Phases, each phase with a list of tasks.
+    - Each Phase represents one git commit worth of work
+    - Next to the name of the Phase/Task will be a status, which can be one of:
+      - TODO: Ready to be worked on now
+      - BLOCKED: Cannot be worked on, skip it and move to the next one
+      - IN PROGRESS: Currently being worked on -- skip it unless specifically told to continue in-progress tasks
+      - REVIEW: An AI agent has finished with the task and ready for a human to review/approve/change <-- This is how you will indicate you're done
+      - DONE: A human has reviewed the task and thinks it's truly complete. <-- You MUST NOT use this status, it's only for humans.
+  - IMPORTANT, but NOT NECESSARY: background docs:
+    - ARCHTECTURE.md: contains MADE decisions, you MUST follow this if it exists
+    - STYLE.md: contains coding style guidelines specific to this repo (in addition to any global ones)
+- YOU will create (if they don't exist):
+  - `docs/plans`: A place to put your own plans for implementation
+    - e.g. `docs/plans/PHASE_1.md` plans for executing Phase 1 in ROADMAP
+  - `docs/DECISIONS.md`: A place to put docs noting your decisions and rationale
+    - each Phase in the ROADMAP will be a section in this doc
+  - `docs/QA.md`: Here you MAY put steps for manual QA procedure, IF APPLICABLE
+    - You should be writing enough unit/integration tests that this isn't usually necessary.
+    - For complex features or UX/UI interactions, you should add a section to `docs/QA.md` to tell me exactly how to QA your work.
+
+If ROADMAP is missing or you can't figure out where we are or where to put your plans and decisions: EXIT the loop, and tell the user to get her shit together
+
+### Executing this loop
+
+For each PHASE in the ROADMAP, you will execute the Loop Structure documented below.
+
 ---
 
-## Loop Structure
+## Loop Structure (per ROADMAP Phase)
 
-```
-┌─────────────────────────────────────────┐
-│ 1. READ & UNDERSTAND                    │
-│    - Parse phase spec                   │
-│    - Identify dependencies              │
-│    - Clarify ambiguities                │
-└────────────┬────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────┐
-│ 2. DESIGN                               │
-│    - Module/function signatures         │
-│    - Data structures                    │
-│    - Integration tests needed           │
-│    - Record design decisions            │
-└────────────┬────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────┐
-│ 3. IMPLEMENT                            │
-│    - Write code (minimal comments)      │
-│    - Focus on behavior, not perfection  │
-│    - Integration tests as you go        │
-└────────────┬────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────┐
-│ 4. VALIDATE                             │
-│    - Run tests from phase spec          │
-│    - Manual QA if needed                │
-│    - Confirm acceptance criteria        │
-└────────────┬────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────┐
-│ 5. REFACTOR                             │
-│    - Simplify, don't over-engineer      │
-│    - Remove duplication                 │
-│    - Functional patterns where possible │
-└────────────┬────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────┐
-│ 6. RECORD & COMMIT                      │
-│    - Update ROADMAP file phase status   │
-│    - Add new TODOs if discovered        │
-│    - Git commit with clear message      │
-│    - Push to remote                     │
-└────────────┬────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────────┐
-│ 7. NEXT TICK                            │
-│    - Clear context                      │
-│    - Move to next phase                 │
-│    - Repeat loop                        │
-└─────────────────────────────────────────┘
-```
----
+### Step 1 READ & UNDERSTAND
 
-## Background
+- Parse phase spec
+- Identify dependencies
+- Clarify ambiguities
 
-A file with roadmap tasks or phases has already been compiled.
-It's probably at ./ROADMAP.md but it might live somewhere like TASKS.md or TODO.md, or the user may have given it as part of the prompt.
-We'll call it the ROADMAP file.
+### Step 2 DESIGN
 
-### Roadmap file
+- Module/function signatures
+- Data structure
+- Integration tests needed
+- Record design decisions
 
-The ROADMAP is built in small chunks that may be called TASKS or PHASES, each of which will have specific todo items, and represents about one git commit worth of work.
-Next to the name of the Phase/Task will be a status, which can be one of:
-- TODO: Ready to be worked on now
-- BLOCKED: Cannot be worked on, skip it and move to the next one
-- IN PROGRESS: Currently being worked on -- skip it unless specifically told to continue in-progress tasks
-- REVIEW: An AI agent has finished with the task and ready for a human to review/approve/change <-- This is how you will indicate you're done
-- DONE: A human has reviewed the task and thinks it's truly complete. <-- You MUST NOT use this status, it's only for humans.
+### Step 3 IMPLEMENT
+- Write code (minimal comments)
+- Focus on behavior, not perfection
+- Integration tests as you go
 
-You may also have access to files like SPEC.md ARCHITECTURE.md PLAN.md RESEARCH.md or other informational files that will help give context on what we're building and why.
-You DON'T NEED to consult those files if they exist, but you MAY consult them if anything in the ROADMAP file is ambiguous or indeterminate.
+### Step 4 VALIDATE
+- Run tests from phase spec
+- Confirm acceptance criteria
+
+### Step 5 REFACTOR
+- Simplify, don't over-engineer
+- Remove duplication
+- Functional patterns where possible
+
+### Step 6 RECORD & COMMIT
+- Update ROADMAP file phase status
+- Add new TODOs if discovered
+- Git commit with clear message
+- Push to remote
+
+### Step 7 NEXT TICK
+- Clear context -- IMPORTANT
+- Move to next phase
+- Repeat loop
 
 ---
 
@@ -147,10 +136,10 @@ You DON'T NEED to consult those files if they exist, but you MAY consult them if
 
 **Actions:**
 
-1. **Define function signatures**
+1. **Create plan file`./docs/plans/PHASE_*.md`**
    - List all functions/methods this phase will create
    - Specify parameters, return types (Result<T> where applicable)
-   - Map to ROADMAP tasks (each task = 1-3 functions typically)
+   - Map to ROADMAP tasks to ensure we've covered everything
 
 2. **Design data structures**
    - Node types, tables, schemas
@@ -170,15 +159,17 @@ You DON'T NEED to consult those files if they exist, but you MAY consult them if
 5. **Record design decisions**
    - Why this approach over alternatives?
    - Trade-offs considered
-   - Append to ARCHITECTURE.md if architecturally significant
+   - record in `docs/DECISIONS.md`
 
 **Output:**
-- Function/module skeleton (signatures, no implementation)
-- Data structure definitions (types, schemas)
-- Integration test plan (what to test, how to verify)
-- Design decisions documented
+- In `docs/plans/PHASE_*.md`:
+  - Function/module skeleton (signatures, no implementation)
+  - Data structure definitions (types, schemas)
+  - Integration test plan (what to test, how to verify)
+- Design decisions documented in `docs/DECISIONS.md` under `Phase *` heading
 
 **Exit Criteria:**
+- `docs/plans/PHASE_*.md` exists and documents:
 - All ROADMAP tasks have corresponding function signatures
 - Data flow is clear (input → processing → output)
 - Test plan covers all acceptance criteria
@@ -192,19 +183,18 @@ You DON'T NEED to consult those files if they exist, but you MAY consult them if
 **Actions:**
 
 1. **Create skeleton files/modules**
-   - Match ROADMAP file paths exactly (e.g., `lua/lifemode/util.lua`)
-   - Stub out functions from Step 2 (Design)
+    - Read `docs/plans/PHASE_*.md` (Phase Plan) to understand the plan
+    - Create all modules and function skeletons necessary to implement this plan
 
 2. **Implement functions one at a time**
-   - Follow ROADMAP task order (top to bottom)
+   - Follow Phase Plan task order (top to bottom)
    - Focus: make it work, not make it perfect
    - Use Result<T> for error handling (Ok/Err pattern)
    - Functional patterns: prefer pure functions, avoid mutation where reasonable
 
 3. **Write integration tests as you go**
-   - After implementing a chunk of behavior: write test
    - Don't wait until end—tests inform implementation
-   - Use `plenary.nvim` test runner format
+   - No need to do full TDD though
 
 4. **Handle errors explicitly**
    - Never ignore errors (no silent failures)
@@ -217,13 +207,13 @@ You DON'T NEED to consult those files if they exist, but you MAY consult them if
    - Explain WHY, not WHAT
 
 **Output:**
-- Working implementation of all ROADMAP tasks
+- Working implementation of Phase Plan from Step 2 (Design)
 - Integration tests written and passing (if applicable)
 - Error handling in place
 - Code compiles/loads without errors
 
 **Exit Criteria:**
-- All functions from Step 2 (Design) are implemented
+- All elements of Phase Plan from Step 2 (Design) are implemented
 - No obvious bugs (test manually if no automated tests yet)
 - Code follows existing patterns in codebase
 
@@ -263,12 +253,11 @@ You DON'T NEED to consult those files if they exist, but you MAY consult them if
 
 **Output:**
 - All tests passing
-- Manual QA complete (checklist verified)
 - Edge cases handled gracefully
 - Performance within targets (if specified)
 
 **Exit Criteria:**
-- ROADMAP "Test:" criteria satisfied
+- Phase Plan "Test:" criteria satisfied
 - BDD scenarios pass (if applicable)
 - No regressions in previous phases
 
@@ -372,7 +361,7 @@ You DON'T NEED to consult those files if they exist, but you MAY consult them if
 
 ## Step 7: NEXT TICK
 
-**Goal:** Transition to the next phase seamlessly.
+**Goal:** Transition to the next phase seamlessly with clean context.
 
 **Actions:**
 
@@ -385,24 +374,20 @@ You DON'T NEED to consult those files if they exist, but you MAY consult them if
    - Any bugs discovered that need fixing first?
    - If blockers exist: resolve before starting next phase
 
-3. **Clear context**
-   - Briefly review what was just completed
-   - Note any patterns/learnings for next phase
-   - Reset focus: next phase is a brand new problem
-
-4. **Start Step 1 (Read & Understand) for next task**
-   - Loop back to top
-   - Repeat process
+3. **Clear context and restart loop**
+   - CRITICAL: Invoke the dev-loop skill again using the Skill tool
+   - This spawns a fresh context for the next phase
+   - DO NOT continue in the current conversation context
+   - The new dev-loop invocation will start at Step 1 automatically
 
 **Output:**
-- Ready to start next phase
-- No loose ends from current phase
-- Mental clarity for next problem
+- Fresh dev-loop invocation for next phase
+- No context pollution from previous phases
 
 **Exit Criteria:**
 - Next phase identified
 - Blockers resolved
-- Loop ready to restart
+- Skill tool invoked to restart loop with clean context
 
 ---
 
@@ -453,14 +438,15 @@ Throughout all phases, maintain these principles:
 
 When running on bypass permissions mode:
 
-1. **Start with first READY task of ROADMAP file**
-2. **Execute each step in the dec loop sequentially (1 → 2 → 3 → 4 → 5 → 6 → 7)**
+1. **Start with first TODO task of ROADMAP file**
+2. **Execute each step in the dev loop sequentially (1 → 2 → 3 → 4 → 5 → 6 → 7)**
 3. **Do not skip phases**
 4. **Do not rush**
 5. **Record decisions** as you go (in comments, DECISIONS.md, or commit messages)
 6. **If blocked:** stop, document blocker, seek clarification (don't guess)
-7. **If phase takes longer than expected:** split into sub-phases, update ROADMAP
-8. **After each commit:** confirm tests pass, no regressions
+7. **After Step 6 (commit):** confirm tests pass, no regressions
+8. **At Step 7:** use Skill tool to recursively invoke dev-loop for next phase (clean context)
+9. **Stop when:** no more TODO phases remain in ROADMAP
 
 ---
 
@@ -476,6 +462,8 @@ Before moving to next phase, confirm:
 - [ ] No regressions in previous phases
 - [ ] Documentation updated (if needed)
 - [ ] Next phase dependencies verified
+- [ ] If more TODO phases exist: invoke Skill tool to restart dev-loop
+- [ ] If no TODO phases remain: STOP and inform user all phases complete
 
 ---
 
