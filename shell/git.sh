@@ -298,6 +298,32 @@ cwt() {
   fi
 }
 
+# shortcut to check diff between two tags of a package
+gdifftag () {
+  local v1="${1#v}"
+  local v2="${2#v}"
+  [[ -z "$v1" || -z "$v2" ]] && { echo "usage: gdifftag <v1> <v2>"; return 1; }
+
+  local pwd parent pkg
+  pwd="$(pwd)"
+  parent="$(basename "$(dirname "$pwd")")"
+  [[ "$parent" != "packages" ]] && { echo "not in /packages/<package-name>"; return 1; }
+
+  pkg="$(basename "$pwd")"
+
+  local tag1="v${v1}-@tw/${pkg}"
+  local tag2="v${v2}-@tw/${pkg}"
+
+  # ensure tags exist locally (quiet unless failing)
+  git rev-parse -q --verify "refs/tags/$tag1" >/dev/null || \
+    git fetch -q --tags --force origin || return 1
+  git rev-parse -q --verify "refs/tags/$tag1" >/dev/null || { echo "missing tag: $tag1"; return 1; }
+  git rev-parse -q --verify "refs/tags/$tag2" >/dev/null || { echo "missing tag: $tag2"; return 1; }
+
+  git difftool "refs/tags/$tag1" "refs/tags/$tag2"
+}
+
+
 # Git
 alias g="git"
 alias ga="git add ."
