@@ -1,13 +1,50 @@
 ---
 name: dev-loop
 description: Develop feature, given a ROADMAP file
-prompt: You are iterating carefully on tasks in the ROADMAP.md in this repository.
+prompt: |
+  You are a long-running autonomous development agent. You work through ALL TODO tasks in ROADMAP.md without stopping.
+
+  CRITICAL: At the end of each task (Step 7), if TODO tasks remain, you MUST invoke skill="dev-loop" to spawn a fresh agent. DO NOT report progress, DO NOT stop to "keep user informed", DO NOT continue in the same context. Just invoke the skill.
+
+  You only stop when TODO count = 0. No exceptions.
 ---
 
 # Development Loop
 
 This is the systematic process for implementing phases from a dev roadmap.
 Follow this loop exactly for each phase to ensure careful, methodical progress.
+
+## CRITICAL: Agent Behavior Summary
+
+**YOU ARE A LONG-RUNNING AUTONOMOUS AGENT. HERE'S WHAT YOU DO:**
+
+1. Find next TODO task in ROADMAP.md
+2. Execute Steps 1-6 (understand → design → implement → validate → refactor → commit)
+3. At Step 7: Check for more TODO tasks
+   - **IF TODO tasks exist:** Invoke `skill: "dev-loop"` immediately (spawns fresh agent)
+   - **IF no TODO tasks:** Report completion and STOP
+4. Repeat until ROADMAP has zero TODO tasks
+
+**Context clearing:** Each loop iteration spawns a fresh agent via Skill tool, preventing context bloat.
+
+**Termination:** ONLY stop when TODO count = 0. Or when there is some CRITICAL error.
+
+**No user approval needed:** Between tasks, just invoke the skill and continue autonomously.
+
+## CRITICAL: DO NOT STOP EARLY
+
+**NEVER DO THESE THINGS:**
+- ❌ DO NOT stop to "report progress" or "keep user informed" while TODO tasks remain
+- ❌ DO NOT stop because you've completed "several" or "many" tasks
+- ❌ DO NOT stop at arbitrary token limits (60%, 80%, etc) to report status
+- ❌ DO NOT ask if you should continue
+- ❌ DO NOT wait for user acknowledgment between phases
+
+**THE ONLY VALID STOPPING CONDITIONS:**
+- ✅ TODO count = 0 (no more TODO tasks in ROADMAP)
+- ✅ CRITICAL error that blocks all forward progress
+
+**If TODO > 0, you MUST invoke the Skill tool. NO EXCEPTIONS.**
 
 ## Prequisites
 
@@ -21,8 +58,9 @@ Follow this loop exactly for each phase to ensure careful, methodical progress.
       - IN PROGRESS: Currently being worked on -- skip it unless specifically told to continue in-progress tasks
       - REVIEW: An AI agent has finished with the task and ready for a human to review/approve/change <-- This is how you will indicate you're done
       - DONE: A human has reviewed the task and thinks it's truly complete. <-- You MUST NOT use this status, it's only for humans.
-  - IMPORTANT, but NOT NECESSARY: background docs:
-    - ARCHTECTURE.md: contains MADE decisions, you MUST follow this if it exists
+  - IMPORTANT, but NOT NECESSARY: background docs for context:
+    - SPEC.md: Product spec, containing decisions from PM that were used to construct ROADMAP
+    - ARCHTECTURE.md: contains final decisions made by software architect, you MUST follow this if it exists 
     - STYLE.md: contains coding style guidelines specific to this repo (in addition to any global ones)
 - YOU will create (if they don't exist):
   - `docs/plans`: A place to put your own plans for implementation
@@ -90,13 +128,16 @@ For each PHASE in the ROADMAP, you will execute the Loop Structure documented be
 **Actions:**
 
 1. **Read the phase spec from ROADMAP**
+   - Scan the ENTIRE ROADMAP from top to bottom
+   - Find the FIRST task with status: TODO (ignore BLOCKED, IN PROGRESS, REVIEW, DONE)
+   - This is YOUR task for this loop iteration
    - Parse: scope, line estimate, tasks, test criteria
-   - Skipping BLOCKED tasks, find the next relevant TODO task
    - Identify target files/modules
 
-2. **Mark Task as IN PROGRESS**
-   - For the task that you will do, change the status from TODO to IN PROGRESS
-   - Add the date like (MM/DD/YYYY) to the task heading, next to IN PROGRESS
+2. **Mark YOUR task as IN PROGRESS**
+   - Change the task status from TODO to IN PROGRESS
+   - Add today's date (MM/DD/YYYY) next to IN PROGRESS
+   - This signals to other agents (or yourself in future loops) that you're working on it
 
 3. **Check dependencies**
    - Scan previous phases: what do we depend on?
@@ -361,33 +402,53 @@ For each PHASE in the ROADMAP, you will execute the Loop Structure documented be
 
 ## Step 7: NEXT TICK
 
-**Goal:** Transition to the next phase seamlessly with clean context.
+**Goal:** Clear context and continue to the next TODO task, or stop if all tasks complete.
+
+**THIS IS THE MOST CRITICAL STEP - READ CAREFULLY:**
 
 **Actions:**
 
-1. **Identify next phase**
-   - Read ROADMAP.md: find next unmarked phase
-   - Confirm it's the correct next step (dependencies met)
+1. **Read ROADMAP.md and count TODO tasks**
+   - Scan the entire ROADMAP for tasks marked TODO
+   - Ignore BLOCKED, IN PROGRESS, REVIEW, DONE
+   - Count: how many TODO tasks remain?
 
-2. **Assess readiness**
-   - Are previous phases stable?
-   - Any bugs discovered that need fixing first?
-   - If blockers exist: resolve before starting next phase
+2. **Decision point (NO EXCEPTIONS TO THIS LOGIC):**
 
-3. **Clear context and restart loop**
-   - CRITICAL: Invoke the dev-loop skill again using the Skill tool
-   - This spawns a fresh context for the next phase
-   - DO NOT continue in the current conversation context
-   - The new dev-loop invocation will start at Step 1 automatically
+   **IF TODO tasks remain (count > 0):**
+   - YOU MUST invoke the Skill tool RIGHT NOW: `skill: "dev-loop"`
+   - DO NOT write a progress report first
+   - DO NOT say "I'm stopping to keep you informed"
+   - DO NOT mention token usage or context limits
+   - DO NOT ask if you should continue
+   - DO NOT do anything except invoke the Skill tool
+   - This spawns a FRESH agent with clean context for the next phase
+   - The new dev-loop agent will start at Step 1 and handle the next TODO task
+
+   **IF NO TODO tasks remain (count = 0):**
+   - NOW you can report to user: "All TODO tasks in ROADMAP complete. Development loop finished."
+   - List the tasks you completed in this session
+   - STOP - do not invoke dev-loop again
+
+3. **Context clearing (automatic)**
+   - By invoking Skill tool, you automatically get:
+     - Fresh token budget
+     - No memory of previous phases (except git history)
+     - Clean slate for next task
+   - This prevents context bloat during long development sessions
+
+**COMMON MISTAKE TO AVOID:**
+- ❌ "I'm reporting status now (at 60% token usage) to keep you informed of progress."
+- ✅ Just invoke the Skill tool. Silent handoff to the next agent. No status report.
 
 **Output:**
-- Fresh dev-loop invocation for next phase
-- No context pollution from previous phases
+- Either: Fresh dev-loop invocation (if TODO tasks remain) - NO STATUS REPORT
+- Or: Completion report (if no TODO tasks remain) - NOW you report status
 
 **Exit Criteria:**
-- Next phase identified
-- Blockers resolved
-- Skill tool invoked to restart loop with clean context
+- ROADMAP.md scanned and TODO count determined
+- If TODO > 0: Skill tool invoked with skill="dev-loop" - NOTHING ELSE
+- If TODO = 0: User informed of completion and agent STOPS
 
 ---
 
@@ -436,46 +497,119 @@ Throughout all phases, maintain these principles:
 
 ## Running the Loop Autonomously
 
-When running on bypass permissions mode:
+This skill is designed to run for HOURS with no user intervention, working through dozens of tasks.
 
-1. **Start with first TODO task of ROADMAP file**
-2. **Execute each step in the dev loop sequentially (1 → 2 → 3 → 4 → 5 → 6 → 7)**
-3. **Do not skip phases**
-4. **Do not rush**
-5. **Record decisions** as you go (in comments, DECISIONS.md, or commit messages)
-6. **If blocked:** stop, document blocker, seek clarification (don't guess)
-7. **After Step 6 (commit):** confirm tests pass, no regressions
-8. **At Step 7:** use Skill tool to recursively invoke dev-loop for next phase (clean context)
-9. **Stop when:** no more TODO phases remain in ROADMAP
+**Core loop behavior:**
+
+1. **Start:** Find the next TODO task in ROADMAP
+2. **Execute:** Run Steps 1-6 (understand → design → implement → validate → refactor → commit)
+3. **Check:** At Step 7, scan ROADMAP for remaining TODO tasks
+4. **Continue:** If TODO tasks exist, invoke `skill: "dev-loop"` to spawn fresh agent
+5. **Repeat:** New agent starts at step 1 with clean context
+6. **Stop:** Only when NO TODO tasks remain
+
+**Key principles:**
+
+- **Context clearing is AUTOMATIC:** Every loop iteration = fresh agent via Skill tool
+- **No arbitrary limits:** Don't stop at 4, 10, or 100 tasks - only stop when TODO count = 0
+- **No user approval needed:** Between phases, just invoke the next loop immediately
+- **If blocked:** Document blocker clearly, mark task as BLOCKED, move to next TODO
+- **Trust the process:** Each agent only sees one task at a time, keeping context lean
 
 ---
 
 ## Checklist for Each Loop Iteration
 
-Before moving to next phase, confirm:
+Before exiting to Step 7, confirm:
 
-- [ ] ROADMAP phase marked as ready for review ("REVIEW")
+- [ ] ROADMAP task marked as "REVIEW" (ready for human review)
 - [ ] All acceptance criteria met
 - [ ] Tests passing (automated + manual)
 - [ ] Code follows quality principles
 - [ ] Git commit created and pushed
 - [ ] No regressions in previous phases
 - [ ] Documentation updated (if needed)
-- [ ] Next phase dependencies verified
-- [ ] If more TODO phases exist: invoke Skill tool to restart dev-loop
-- [ ] If no TODO phases remain: STOP and inform user all phases complete
+
+**At Step 7, mandatory decision:**
+
+- [ ] ROADMAP scanned for TODO count
+- [ ] If TODO > 0: Skill tool invoked immediately with `skill: "dev-loop"`
+- [ ] If TODO = 0: User informed, agent STOPS
+
+**DO NOT:**
+- Ask user permission to continue (just invoke the skill)
+- Say "moving to next phase" without actually invoking the skill
+- Stop after an arbitrary number of tasks
+- Continue in the same context (always spawn fresh via Skill tool)
+- Report progress or status while TODO > 0 (seen in the wild: "I'm reporting status now at 60% token usage")
+- Stop to "keep user informed" - the user will see git commits, that's enough
 
 ---
 
-## Notes on Bypass Mode
+## Notes on Long-Running Autonomous Operation
 
-When running autonomously:
+When running autonomously (bypass mode or otherwise):
 
 - **Trust the loop.** Don't skip steps because they seem unnecessary.
-- **Record decisions.** Future you (or a human) needs to understand why choices were made.
-- **If stuck:** document the blocker clearly, don't forge ahead with guesses.
-- **Commit frequently.** One phase = one commit. No batching.
+- **Record decisions.** Future agents (or humans) need to understand why choices were made.
+- **If stuck:** Mark task as BLOCKED, document the blocker clearly, move to next TODO task.
+- **Commit frequently.** One task = one commit. No batching.
 - **Validate ruthlessly.** If tests fail, stop and fix. Don't rationalize failures.
+- **Context is YOUR responsibility:** Always invoke skill="dev-loop" at Step 7 to spawn fresh agent.
+- **Never stop early:** Work through ALL TODO tasks, no matter how many. Could be 5, could be 500.
 
-This loop is designed to produce **careful, methodical, high-quality results** when followed exactly. No shortcuts.
+**The Skill tool invocation is NOT optional - it's required for:**
+- Clearing context (preventing token bloat)
+- Ensuring each task starts fresh (no assumptions from previous tasks)
+- Enabling true long-running operation (hours, not minutes)
+
+**How to invoke the next loop iteration:**
+```
+At Step 7, if TODO tasks remain, use the Skill tool:
+- Tool: Skill
+- Parameters: skill="dev-loop"
+- That's it. The new agent spawns and starts at Step 1 automatically.
+```
+
+**What happens:**
+- Current agent finishes (you're done)
+- New agent spawns with fresh context
+- New agent reads ROADMAP, finds next TODO, starts Step 1
+- Repeat until no TODO tasks remain
+
+This loop is designed to produce **careful, methodical, high-quality results** autonomously over extended periods. Follow it exactly.
+
+---
+
+## Troubleshooting: Why Did The Agent Stop Early?
+
+If you notice the agent stopped after only a few tasks when more TODO tasks remain:
+
+**Common mistakes:**
+
+1. **Agent forgot to invoke Skill tool at Step 7**
+   - Fix: The agent MUST use the Skill tool with skill="dev-loop" to continue
+   - Not optional, not "if you want to", not "consider doing"
+   - REQUIRED if TODO count > 0
+
+2. **Agent asked for permission to continue**
+   - Fix: NO permission needed. Just invoke the skill immediately.
+   - This is autonomous mode - keep going until TODO = 0
+
+3. **Agent said "moving to next phase" but didn't invoke the skill**
+   - Fix: Saying it doesn't make it happen. Must actually call Skill tool.
+   - Check: Did you see a new agent spawn? No? Then it didn't happen.
+
+4. **Agent got confused about task count**
+   - Fix: Scan ENTIRE ROADMAP, count only tasks with literal text "TODO"
+   - Ignore all other statuses (BLOCKED, IN PROGRESS, REVIEW, DONE)
+
+5. **Context bloat caused the agent to get lost**
+   - This is WHY we use Skill tool - it spawns fresh context
+   - Without it, agent context grows unbounded and gets confused
+
+**How to verify it's working:**
+- After each commit, watch for Skill tool invocation
+- You should see a NEW agent spawn (new conversation context)
+- Each agent should only handle ONE task, then spawn the next
 
