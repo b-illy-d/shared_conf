@@ -1,13 +1,17 @@
 return {
-  {
-    'b-illy-d/lifemode.nvim',
-    config = function()
-      require('lifemode').setup({
-        vault_root = vim.fn.expand("~/lm"), -- REQUIRED: Your notes directory
-        leader = '<Space>',                 -- Optional: LifeMode leader key (default)
-        max_depth = 10,                     -- Optional: Max expansion depth (default)
-        bible_version = 'RSVCE',            -- Optional: Bible version (default)
-      })
-    end,
-  }
+  dir = "/Users/billy/lifemode.nvim",
+  config = function()
+    require('lifemode').setup({
+      vault_path = "~/test_vault",
+      sidebar = { width_percent = 30 },
+      keymaps = {
+        new_node = "<leader>nc",
+        narrow = "<leader>nn",
+        widen = "<leader>nw",
+        jump_context = "<leader>nj",
+        toggle_sidebar = "<leader>ns",
+        find_node = "<leader>ff",
+      }
+    })
+  end
 }

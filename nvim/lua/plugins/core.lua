@@ -122,11 +122,11 @@ return {
       vim.g.mergetool_prefer_revision = "local"
     end,
     keys = {
-      { "<leader>mt", "<Plug>(MergetoolToggle)", desc = "Toggle mergetool" },
-      { "<C-Left>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeLeft)" or "<C-Left>" end, expr = true },
-      { "<C-Right>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeRight)" or "<C-Right>" end, expr = true },
-      { "<C-Down>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeDown)" or "<C-Down>" end, expr = true },
-      { "<C-Up>", function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeUp)" or "<C-Up>" end, expr = true },
+      { "<leader>mt", "<Plug>(MergetoolToggle)",                                                                desc = "Toggle mergetool" },
+      { "<C-Left>",   function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeLeft)" or "<C-Left>" end,   expr = true },
+      { "<C-Right>",  function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeRight)" or "<C-Right>" end, expr = true },
+      { "<C-Down>",   function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeDown)" or "<C-Down>" end,   expr = true },
+      { "<C-Up>",     function() return vim.o.diff and "<Plug>(MergetoolDiffExchangeUp)" or "<C-Up>" end,       expr = true },
     },
   },
 

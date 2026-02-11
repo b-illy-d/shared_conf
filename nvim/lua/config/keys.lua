@@ -109,7 +109,6 @@ local function combined_float()
       for _, res in pairs(results) do
         if res.result and res.result.contents then
           local md = util.convert_input_to_markdown_lines(res.result.contents)
-          md = util.trim_empty_lines(md)
           for _, l in ipairs(md) do table.insert(hl, l) end
           break
         end
@@ -141,7 +140,6 @@ local function combined_float()
           end
           if sig.documentation then
             local md = util.convert_input_to_markdown_lines(sig.documentation)
-            md = util.trim_empty_lines(md)
             for _, l in ipairs(md) do table.insert(sl, l) end
           end
           break

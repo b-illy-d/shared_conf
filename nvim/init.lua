@@ -24,13 +24,16 @@ require("lazy").setup("plugins", {
 require("config.theme")
 -- global configs
 require("config.autocmds")
+require("config.diagnostic")
 require("config.format")
+require("config.git")
+require("config.gui")
+require("config.js")
+require("config.markdown")
 require("config.keys")
 require("config.opts")
-require("config.whitespace")
-require("config.gui")
-require("config.diagnostic")
 require("config.terminal")
+require("config.whitespace")
 -- by language
 require("config.js")
 

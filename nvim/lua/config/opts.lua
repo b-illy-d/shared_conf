@@ -27,7 +27,7 @@ o.foldenable = true
 o.foldlevel = 99
 o.foldlevelstart = 99
 o.foldcolumn = "3"
-o.foldmethod = "manual"
+o.foldmethod = "expr"
 
 o.splitright = true
 o.splitbelow = true
