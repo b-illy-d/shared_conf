@@ -205,97 +205,47 @@ gwl() {
   git worktree list
 }
 
-cwt() {
-  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "not a git repo"; return 1; }
+cw() {
+  local cur_root rel repo sel_root target arg="$1"
 
-  local current_root=$(git rev-parse --show-toplevel)
-  local current_path=$(pwd)
-  local relative_path="${current_path#$current_root}"
+  cur_root=$(git rev-parse --show-toplevel) || return 1
+  cur_root=$(cd "$cur_root" && pwd -P)
 
-  relative_path="${relative_path#/}"
+  repo=$(basename "$cur_root")
 
-  if [[ -n "$1" ]]; then
-    local repo_name=$(basename "$current_root")
-    local target_worktree="${current_root}/../${repo_name}-$1"
+  rel="${PWD#$cur_root}"
+  rel="${rel#/}"
 
-    if [[ ! -d "$target_worktree" ]]; then
-      local found_worktree=""
-      while IFS= read -r wt_path; do
-        local wt_name=$(basename "$wt_path")
-        if [[ "$wt_name" == *-"$1" ]]; then
-          found_worktree="$wt_path"
-          break
-        fi
-      done < <(git worktree list --porcelain | grep "worktree " | sed 's/worktree //')
-
-      if [[ -n "$found_worktree" ]]; then
-        target_worktree="$found_worktree"
-      else
-        echo "Worktree not found: $target_worktree"
-        return 1
-      fi
-    fi
-
-    local target_path="$target_worktree/$relative_path"
-
-    if [[ ! -d "$target_path" ]]; then
-      echo "Warning: Path doesn't exist in target worktree, going to root"
-      target_path="$target_worktree"
-    fi
-
-    cd "$target_path"
-  else
-    local worktrees=()
-    local branches=()
-    local current_wt=""
-    local current_branch=""
-
-    while IFS= read -r line; do
-      if [[ "$line" == worktree* ]]; then
-        current_wt="${line#worktree }"
-      elif [[ "$line" == branch* ]]; then
-        current_branch="${line#branch refs/heads/}"
-        worktrees+=("$current_wt")
-        branches+=("$current_branch")
-      elif [[ "$line" == "HEAD"* ]] && [[ -z "$current_branch" ]]; then
-        # Detached HEAD state
-        current_branch="(detached)"
-        worktrees+=("$current_wt")
-        branches+=("$current_branch")
-        current_branch=""
-      fi
-    done < <(git worktree list --porcelain)
-
-    if [[ ${#worktrees[@]} -eq 0 ]]; then
-      echo "No worktrees found"
+  case "$arg" in
+    "" )
+      sel_root=$(
+        git worktree list |
+          fzf \
+            --height 25 --layout=reverse --border \
+            --prompt="worktree> " \
+            --preview 'git -C {1} status --short --branch' \
+            --preview-window=right:60% |
+          awk '{print $1}'
+      ) || return
+      sel_root=$(cd "$sel_root" && pwd -P)
+      ;;
+    0 )
+      sel_root="$HOME/triplewhale/$repo"
+      ;;
+    [1-9] )
+      sel_root="$HOME/worktrees/$arg/$repo"
+      ;;
+    * )
       return 1
-    fi
+      ;;
+  esac
 
-    local display_options=()
-    for i in {1..${#worktrees[@]}}; do
-      local wt_dir
-      wt_dir=$(basename "${worktrees[$i]}")
-      display_options+=("${wt_dir} -> ${branches[$i]}")
-    done
+  [ -d "$sel_root" ] || return 1
 
-    echo "Select a worktree:"
-    select choice in "${display_options[@]}"; do
-      if [[ -n "$choice" ]]; then
-        # Extract the index from REPLY
-        local idx=$((REPLY - 1))
-        local worktree="${worktrees[$idx]}"
-        local target_path="$worktree/$relative_path"
+  target="$sel_root"
+  [ -n "$rel" ] && target="$sel_root/$rel"
 
-        if [[ ! -d "$target_path" ]]; then
-          echo "Warning: Path doesn't exist in target worktree, going to root"
-          target_path="$worktree"
-        fi
-
-        cd "$target_path"
-        break
-      fi
-    done
-  fi
+  [ -d "$target" ] && cd "$target" || cd "$sel_root"
 }
 
 # shortcut to check diff between two tags of a package

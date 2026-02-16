@@ -23,7 +23,7 @@ allowed-tools: Read, Grep, Glob
 - The library extends Mantine, so you can look to Mantine docs if you're confused about how something works
 
 ## Avoid `style={{ ... }}` prop wherever possible, pass Mantine-native props (FIX)
-- Most @tw/ui-components accept props, like `color='blue.1'` avoid a `style={{}}` prop at all costs
+- Most @tw/ui-components accept props, like `borderColor='blue.1'` avoid a `style={{}}` prop at all costs
 
 ## Avoid `useRef` and other anti-patterns, use normal immutable React patterns where possible (FLAG)
 - Do not overuse `useMemo` or `useCallback`.

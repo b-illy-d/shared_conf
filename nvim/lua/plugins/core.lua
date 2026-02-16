@@ -23,7 +23,7 @@ return {
     "numToStr/Comment.nvim",
     opts = {
       toggler = {
-        line = 'gcc',
+        line = '<leader>c',
         block = 'gbc',
       },
       opleader = {
@@ -37,8 +37,8 @@ return {
         basic = true,
       }
     },
-    config = function()
-      require("Comment").setup()
+    config = function(_, opts)
+      require("Comment").setup(opts)
     end
   },
   {
