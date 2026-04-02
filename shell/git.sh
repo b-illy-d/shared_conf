@@ -20,16 +20,15 @@ newpr() {
 mergepr() {
   local pr_number=""
   local method="squash"
-  local title=${1:-"$(git log -1 --pretty=%B)"}
+  local title=""
 
   while getopts "n:m:" opt; do
     case "$opt" in
       n) pr_number="$OPTARG" ;;
       m) method="$OPTARG" ;;
-      *) echo "Usage: mergepr [-n PR_NUMBER] [-m METHOD] [TITLE]" && return 1 ;;
+      *) echo "Usage: mergepr [-n PR_NUMBER] [-m METHOD]" && return 1 ;;
     esac
   done
-  shift $((OPTIND - 1))
 
   if [[ -z "$pr_number" ]]; then
     pr_number=$(gh pr view --json number -q '.number' 2>/dev/null)
@@ -40,8 +39,10 @@ mergepr() {
     return 1
   fi
 
+  title=$(gh pr view "$pr_number" --json title -q '.title' 2>/dev/null)
   if [[ -z "$title" ]]; then
-    title="Merging PR #$pr_number"
+    echo "❌ Unable to fetch title for PR #$pr_number."
+    return 1
   fi
 
   echo "🚀 Merging PR #$pr_number using '$method' with title: \"$title\"..."

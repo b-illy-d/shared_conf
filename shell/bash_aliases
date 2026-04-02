@@ -103,18 +103,10 @@ btoa() {
 }
 
 # python
-DEFAULT_VENV_DIR="venv"
-venv() {
-  local dir="${1:-$DEFAULT_VENV_DIR}"
-  python3 -m venv $dir
-  source $dir/bin/activate
-}
-alias py="python3"
-alias pir="pip install -r requirements.txt"
-alias activate="source ${1:-$DEFAULT_VENV_DIR}/bin/activate"
+VENV_DIR="venv"
+alias svba="source ${1:-$VENV_DIR}/bin/activate"
 
 # Whoa
-        # --line-range="$((line - 2)):$((line + 2))" \
 frg() {
   local result
   result=$(rg -n -H . --color=always | \

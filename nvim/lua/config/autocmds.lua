@@ -55,7 +55,6 @@ ac({ "BufLeave", "InsertEnter", "FocusLost" }, {
   group = grp,
   callback = function() vim.wo.relativenumber = false end,
 })
-----
 
 -- diff-specific tweaks
 ac("OptionSet", {
@@ -73,4 +72,12 @@ ac("OptionSet", {
 ac("TextYankPost", {
   group = grp,
   callback = function() vim.highlight.on_yank({ higroup = "Search", timeout = 500 }) end,
+})
+
+-- dont backupcopy when using k9s
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "**/kubectl-edit-*",
+  callback = function()
+    vim.bo.backupcopy = "yes"
+  end,
 })
