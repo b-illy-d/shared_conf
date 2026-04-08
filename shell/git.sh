@@ -250,6 +250,12 @@ cw() {
 }
 
 # shortcut to check diff between two tags of a package
+viewpr() {
+  local url
+  url=$(gh pr view --json url -q '.url' 2>/dev/null) || { echo "No PR found for current branch."; return 1; }
+  echo "$url"
+}
+
 gdifftag () {
   local v1="${1#v}"
   local v2="${2#v}"
