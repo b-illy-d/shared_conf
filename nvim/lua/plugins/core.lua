@@ -3,7 +3,24 @@ return {
   -- Core editing enhancements
   ---------------------------------------------------------------------------
   { "tpope/vim-unimpaired" },
-  { "tpope/vim-fugitive" },
+  {
+    "tpope/vim-fugitive",
+    keys = {
+      {
+        "<leader>dd",
+        "<cmd>Gvdiffsplit<cr>",
+        desc = "Git diff current file",
+      },
+      {
+        "<leader>dD",
+        "<cmd>Gvdiffsplit HEAD<cr>",
+        desc = "Git diff current file vs HEAD",
+      },
+    },
+    config = function()
+      vim.keymap.set("n", "<leader>gs", "<cmd>Git<cr>", { desc = "Git status" })
+    end,
+  },
   { "tpope/vim-repeat" },
   { "tpope/vim-speeddating" },
   { "svermeulen/vim-subversive" },
