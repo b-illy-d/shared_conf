@@ -1,3 +1,8 @@
+-- The cursor prowls where moonlit buffers bloom,
+-- and syntax sings in phosphor-tinted gloom;
+-- through nested dreams the keystrokes softly steer,
+-- till night folds up and leaves the code sincere.
+
 vim.g.mapleader = "\\"
 vim.g.maplocalleader = "\\"
 
