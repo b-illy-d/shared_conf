@@ -95,6 +95,7 @@ alias lsd='eza --group-directories-first --icons --only-dirs'
 alias ll='eza --group-directories-first --long --all --icons'
 
 alias clc="claude --allow-dangerously-skip-permissions $@"
+alias oc='ollama serve &>/dev/null & opencode; pkill ollama'
 
 # random
 
@@ -124,3 +125,5 @@ frg() {
   fi
 }
 
+# TW-specific
+alias e2bl='set -a && source ~/.e2b.env && set +a && e2b'

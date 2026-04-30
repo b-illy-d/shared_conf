@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import os
+import shutil
+from pathlib import Path
+
+
+def repo_root() -> Path:
+    return Path(__file__).resolve().parents[1]
+
+
+def ensure_dir(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+
+
+def backup_path(path: Path) -> Path:
+    candidate = path.with_name(f"{path.name}.pre-ai-sync")
+    if not candidate.exists():
+        return candidate
+    index = 1
+    while True:
+        candidate = path.with_name(f"{path.name}.pre-ai-sync.{index}")
+        if not candidate.exists():
+            return candidate
+        index += 1
+
+
+def replace_with_symlink(target: Path, link_path: Path) -> None:
+    ensure_dir(link_path.parent)
+    if link_path.is_symlink():
+        current = Path(os.readlink(link_path))
+        if current == target:
+            return
+        link_path.unlink()
+    elif link_path.exists():
+        link_path.rename(backup_path(link_path))
+    link_path.symlink_to(target)
+
+
+def render(frontmatter: Path, body: Path, dest: Path) -> None:
+    ensure_dir(dest.parent)
+    content = frontmatter.read_text().rstrip() + "\n\n" + body.read_text().rstrip() + "\n"
+    if dest.exists() and dest.read_text() == content:
+        return
+    dest.write_text(content)
+
+
+def publish_bundles(root: Path) -> None:
+    ai_root = root / "ai"
+    commands_root = root / "claude" / "commands"
+    skills_root = root / "claude" / "skills"
+    ensure_dir(commands_root)
+    ensure_dir(skills_root)
+
+    for bundle in sorted(p for p in ai_root.iterdir() if p.is_dir()):
+        body = bundle / "core.md"
+        if not body.exists():
+            continue
+
+        claude_frontmatter = bundle / "claude.frontmatter.md"
+        if claude_frontmatter.exists():
+            render(claude_frontmatter, body, commands_root / f"{bundle.name}.md")
+
+        codex_frontmatter = bundle / "codex.frontmatter.md"
+        if codex_frontmatter.exists():
+            render(codex_frontmatter, body, skills_root / bundle.name / "SKILL.md")
+
+
+def sync_mounts(root: Path) -> None:
+    stable_root = Path.home() / ".config" / "ai-root" / "current"
+    replace_with_symlink(root, stable_root)
+
+    replace_with_symlink(stable_root / "claude" / "agents", Path.home() / ".claude" / "agents")
+    replace_with_symlink(stable_root / "claude" / "settings.local.json", Path.home() / ".claude" / "settings.local.json")
+    replace_with_symlink(stable_root / "claude" / "skills", Path.home() / ".claude" / "skills")
+    replace_with_symlink(stable_root / "claude" / "commands", Path.home() / ".claude" / "commands")
+    replace_with_symlink(stable_root / "claude" / "skills", Path.home() / ".codex" / "skills")
+
+
+def main() -> None:
+    root = repo_root()
+    publish_bundles(root)
+    sync_mounts(root)
+
+
+if __name__ == "__main__":
+    main()
