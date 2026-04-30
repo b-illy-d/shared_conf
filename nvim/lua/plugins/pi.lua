@@ -1,10 +1,13 @@
 return {
   {
-    "pablopunk/pi.nvim",
+    "carderne/pi-nvim",
     config = function()
-      require("pi").setup()
-      vim.keymap.set("n", "<leader>ai", ":PiAsk<CR>", { desc = "Ask pi" })
-      vim.keymap.set("v", "<leader>ai", ":PiAskSelection<CR>", { desc = "Ask pi (selection)" })
+      require("pi-nvim").setup()
+      vim.keymap.set("n", "<leader>pp", ":PiSend<CR>")
+      vim.keymap.set("v", "<leader>pp", ":PiSendSelection<CR>")
+      vim.keymap.set({ "n", "v" }, "<leader>pf", ":PiSendFile<CR>")
+      vim.keymap.set({ "n", "v" }, "<leader>pb", ":PiSendBuffer<CR>")
+      vim.keymap.set({ "n", "v" }, "<leader>pi", ":PiPing<CR>")
     end
   }
 }

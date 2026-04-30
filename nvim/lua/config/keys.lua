@@ -208,8 +208,6 @@ map("n", "<leader>t", function()
 end, { desc = "vertical terminal (reuse)" })
 map("t", "<Esc>", [[<C-\><C-n>]], { desc = "exit terminal mode" })
 
--- AI Coding Agent
-
 -- Quit
 vim.api.nvim_create_user_command("Q", function()
   vim.cmd("qa")
