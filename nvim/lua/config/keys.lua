@@ -161,7 +161,6 @@ map("n", "gr", vim.lsp.buf.references, { desc = 'goto references' })
 map("n", "gd", vim.lsp.buf.definition, { desc = "goto def" })
 map("n", "gi", vim.lsp.buf.implementation, { desc = "impl" })
 map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "rename" })
--- map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "code action" })
 
 -- Diagnostics
 map("n", "<leader>dd", function()
@@ -208,6 +207,8 @@ map("n", "<leader>t", function()
   end
 end, { desc = "vertical terminal (reuse)" })
 map("t", "<Esc>", [[<C-\><C-n>]], { desc = "exit terminal mode" })
+
+-- AI Coding Agent
 
 -- Quit
 vim.api.nvim_create_user_command("Q", function()
