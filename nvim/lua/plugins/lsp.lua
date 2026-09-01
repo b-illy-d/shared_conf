@@ -12,6 +12,14 @@ return {
       "saadparwaiz1/cmp_luasnip",
     },
     config = function()
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+        pattern = { "*.zed", "*.spicedb" },
+        callback = function()
+          if vim.fn.getline(1):match("^definition ") then
+            vim.bo.filetype = "spicedb"
+          end
+        end,
+      })
       require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = {
@@ -92,6 +100,11 @@ return {
         yamlls = {},
         html = {},
         cssls = {},
+        spicedb = {
+          cmd = { "zed", "lsp" },
+          filetypes = { "spicedb" },
+          root_markers = { "spicedb.yaml", ".git" },
+        },
       }
 
       for name, cfg in pairs(servers) do

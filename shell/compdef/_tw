@@ -1,0 +1,7 @@
+#compdef tw
+
+local reply
+local si=$IFS
+IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" tw --get-yargs-completions "${words[@]}"))
+IFS=$si
+_describe 'values' reply

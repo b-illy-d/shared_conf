@@ -28,6 +28,8 @@ compinit -C -d ~/.cache/zsh/.zcompdump-$ZSH_VERSION
 
 bindkey -e
 
+[[ -r ./compdef/_tw.zsh ]] && source ./compdef/_tw.zsh
+
 # enable bash-style completion for scripts that use `complete`
 autoload -Uz +X bashcompinit 2>/dev/null || true
 type bashcompinit >/dev/null 2>&1 && bashcompinit

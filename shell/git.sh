@@ -249,13 +249,13 @@ cw() {
   [ -d "$target" ] && cd "$target" || cd "$sel_root"
 }
 
-# shortcut to check diff between two tags of a package
 viewpr() {
   local url
   url=$(gh pr view --json url -q '.url' 2>/dev/null) || { echo "No PR found for current branch."; return 1; }
   echo "$url"
 }
 
+# shortcut to check diff between two tags of a package
 gdifftag () {
   local v1="${1#v}"
   local v2="${2#v}"
@@ -280,6 +280,26 @@ gdifftag () {
   git difftool "refs/tags/$tag1" "refs/tags/$tag2"
 }
 
+# delete old branches
+# gclean 7 -- dry run, find branches with no commit in last 7d
+# gclean 7 go -- actually delete
+# deletes local only, your work history is still on origin
+gclean() {
+  local days=7 prune=0 cutoff
+  [[ "$1" =~ ^[0-9]+$ ]] && { days="$1"; shift; }
+  [[ "$1" == "go" ]] && prune=1
+  cutoff=$(date -d "$days days ago" +%s 2>/dev/null || date -v-"$days"d +%s)
+  git for-each-ref --format='%(committerdate:unix) %(refname:short)' refs/heads \
+    | awk -v c="$cutoff" '$1 < c {print $2}' \
+    | grep -vE '^(main|master)$' \
+    | while read -r b; do
+        if (( prune )); then
+          git branch -D "$b"
+        else
+          printf 'would delete %s (last commit %s)\n' "$b" "$(git log -1 --format=%cr "$b")"
+        fi
+      done
+}
 
 # Git
 alias g="git"
