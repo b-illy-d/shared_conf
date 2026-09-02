@@ -1,0 +1,1 @@
+/usr/bin/ssh-add --apple-load-keychain >/dev/null 2>&1

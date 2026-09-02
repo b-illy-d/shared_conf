@@ -14,6 +14,7 @@ fi
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f ~/shared_conf/shell/bash_aliases ]] && source ~/shared_conf/shell/bash_aliases
 [[ -f ~/shared_conf/shell/git.sh ]] && source ~/shared_conf/shell/git.sh
+[[ -f ~/shared_conf/shell/ssh-keys ]] && source ~/shared_conf/shell/ssh-keys
 
 # --- completions (zsh + bash-compatible) ---
 # keep system dirs in $fpath so compinit exists
